@@ -4,6 +4,8 @@ namespace TicTacToe;
 
 class Board
 {
+    const DIMENSION = 3;
+
     public function __construct()
     {
         $this->board = [
@@ -73,6 +75,61 @@ class Board
         $result .= "\n\n";
 
         return $result;
+    }
+
+    public function rows()
+    {
+        return $this->toArray();
+    }
+
+    public function columns()
+    {
+        $row = 0;
+        $column = 0;
+        $result = [];
+        $grid = $this->toArray();
+
+        for ($column = 0; $column < self::DIMENSION; $column++) {
+            $columns = [];
+            for ($row = 0; $row < self::DIMENSION; $row++) {
+                $columns[] = $grid[$row][$column];
+            }
+            $result[] = $columns;
+        }
+
+        return $result;
+    }
+
+    public function diagonals()
+    {
+        $firstDiagonal = [
+            [0, 0],
+            [1, 1],
+            [2, 2]
+        ];
+
+        $secondDiagonal = [
+            [0, 2],
+            [1, 1],
+            [2, 0]
+        ];
+
+        $firstDiagonalCells = [];
+        $secondDiagonalCells = [];
+        
+        foreach ($firstDiagonal as $cellCoords) {
+            $cell = $this->cellLookup($cellCoords);
+            $firstDiagonalCells[] = $cell->getValue();
+        }
+        foreach ($secondDiagonal as $cellCoords) {
+            $cell = $this->cellLookup($cellCoords);
+            $secondDiagonalCells[] = $cell->getValue();
+        }
+
+        return [
+            $firstDiagonalCells,
+            $secondDiagonalCells,
+        ];
     }
 
     private function cellLookup($coords)

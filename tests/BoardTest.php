@@ -43,4 +43,51 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedString, $this->board->toString());
     }
+
+    public function testCanRetrieveRows()
+    {
+        $this->board->set([0, 0], 'X');
+        $this->board->set([1, 1], 'O');
+        $this->board->set([1, 2], 'O');
+
+        $rows = $this->board->rows();
+        $expectedRows = [
+            ['X', '', ''],
+            ['', 'O', 'O'],
+            ['', '', '']
+        ];
+        
+        $this->assertEquals($expectedRows, $rows);
+    }
+
+    public function testCanRetrieveColumns()
+    {
+        $this->board->set([0, 0], 'X');
+        $this->board->set([1, 1], 'O');
+        $this->board->set([1, 2], 'O');
+
+        $columns = $this->board->columns();
+        $expectedColumns = [
+            ['X', '', ''],
+            ['', 'O', ''],
+            ['', 'O', ''],
+        ];
+
+        $this->assertEquals($expectedColumns, $columns);
+    }
+
+    public function testCanRetrieveDiagonals()
+    {
+        $this->board->set([0, 0], 'X');
+        $this->board->set([1, 1], 'O');
+        $this->board->set([1, 2], 'O');
+
+        $diagonals = $this->board->diagonals();
+        $expectedRows = [
+            ['X', 'O', ''],
+            ['', 'O', ''],
+        ];
+        
+        $this->assertEquals($expectedRows, $diagonals);
+    }
 }
