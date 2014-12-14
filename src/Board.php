@@ -79,7 +79,35 @@ class Board
 
     public function rows()
     {
-        return $this->toArray();
+        $rowsCoords = [
+            [
+                [0, 0],
+                [0, 1],
+                [0, 2],
+            ],
+            [
+                [1, 0],
+                [1, 1],
+                [1, 2],
+            ],
+            [
+                [2, 0],
+                [2, 1],
+                [2, 2],
+            ],
+        ];
+        $rows = [];
+
+        foreach ($rowsCoords as $rowCoords) {
+            $row = [];
+            foreach ($rowCoords as $coords) {
+                $cell = $this->cellLookup($coords);
+                $row[] = $cell;
+            }
+            $rows[] = $row;
+        }
+
+        return $rows;
     }
 
     public function columns()
@@ -107,7 +135,7 @@ class Board
             $column = [];
             foreach ($columnCoords as $coords) {
                 $cell = $this->cellLookup($coords);
-                $column[] = $cell->getValue();
+                $column[] = $cell;
             }
             $columns[] = $column;
         }
@@ -134,11 +162,11 @@ class Board
         
         foreach ($firstDiagonal as $cellCoords) {
             $cell = $this->cellLookup($cellCoords);
-            $firstDiagonalCells[] = $cell->getValue();
+            $firstDiagonalCells[] = $cell;
         }
         foreach ($secondDiagonal as $cellCoords) {
             $cell = $this->cellLookup($cellCoords);
-            $secondDiagonalCells[] = $cell->getValue();
+            $secondDiagonalCells[] = $cell;
         }
 
         return [

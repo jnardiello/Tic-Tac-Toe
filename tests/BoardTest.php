@@ -56,8 +56,10 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             ['', 'O', 'O'],
             ['', '', '']
         ];
+
+        $result = $this->cellToArray($rows);
         
-        $this->assertEquals($expectedRows, $rows);
+        $this->assertEquals($expectedRows, $result);
     }
 
     public function testCanRetrieveColumns()
@@ -73,7 +75,9 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             ['', 'O', ''],
         ];
 
-        $this->assertEquals($expectedColumns, $columns);
+        $result = $this->cellToArray($columns);
+
+        $this->assertEquals($expectedColumns, $result);
     }
 
     public function testCanRetrieveDiagonals()
@@ -87,7 +91,24 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             ['X', 'O', ''],
             ['', 'O', ''],
         ];
+
+        $result = $this->cellToArray($diagonals);
         
-        $this->assertEquals($expectedRows, $diagonals);
+        $this->assertEquals($expectedRows, $result);
     }
+
+    private function cellToArray(array $cellsArray)
+    {
+        $result = [];
+        foreach ($cellsArray as $array) {
+            $currentColumnToArray = [];
+            foreach ($array as $cell) {
+                $currentColumnToArray[] = $cell->getValue();
+            }
+            $result[] = $currentColumnToArray;
+        }
+
+        return $result;
+    }
+
 }
