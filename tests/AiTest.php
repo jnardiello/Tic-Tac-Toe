@@ -6,7 +6,6 @@ class AiTest extends \PHPUnit_Framework_TestCase
 {
     public function testAiCanWinIfOnePlaceholderIsMissingOnSameRow()
     {
-        $this->markTestIncomplete();
         $board = new Board();
         $board->set([0, 0], 'X');
         $board->set([0, 1], 'X');
@@ -15,13 +14,8 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $ai->setPlaceholder('X')
             ->setBoard($board);
 
-        $ai->deduct();
+        $nextMoveCoords = $ai->deduct();
 
-        $expectedBoard = [
-            ['X', 'X', 'X'],
-            ['', '', ''],
-            ['', '', ''],
-        ];
-        $this->assertEquals($expectedBoard, $board->toArray());
+        $this->assertEquals('A3', $nextMoveCoords);
     }
 }
