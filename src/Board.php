@@ -84,20 +84,35 @@ class Board
 
     public function columns()
     {
-        $row = 0;
-        $column = 0;
-        $result = [];
-        $grid = $this->toArray();
+        $columnsCoords = [
+            [
+                [0, 0],
+                [1, 0],
+                [2, 0],
+            ],
+            [
+                [0, 1],
+                [1, 1],
+                [2, 1],
+            ],
+            [
+                [0, 2],
+                [1, 2],
+                [2, 2],
+            ],
+        ];
+        $columns = [];
 
-        for ($column = 0; $column < self::DIMENSION; $column++) {
-            $columns = [];
-            for ($row = 0; $row < self::DIMENSION; $row++) {
-                $columns[] = $grid[$row][$column];
+        foreach ($columnsCoords as $columnCoords) {
+            $column = [];
+            foreach ($columnCoords as $coords) {
+                $cell = $this->cellLookup($coords);
+                $column[] = $cell->getValue();
             }
-            $result[] = $columns;
+            $columns[] = $column;
         }
 
-        return $result;
+        return $columns;
     }
 
     public function diagonals()
