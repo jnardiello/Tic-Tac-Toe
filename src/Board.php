@@ -19,10 +19,10 @@ class Board
         ];
     }
 
-    public function set($coords, $player)
+    public function set($coords, $placeholder)
     {
         $cell = $this->cellLookup($coords);
-        $cell->setValue($player->getPlaceholder());
+        $cell->setValue($placeholder);
     }
 
     public function toArray()

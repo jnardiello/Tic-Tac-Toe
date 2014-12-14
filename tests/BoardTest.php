@@ -6,19 +6,12 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->john = new Player('John');
-        $this->john->setPlaceholder('X');
-
-        $this->al = new Player('Al');
-        $this->al->setPlaceholder('O');
-
         $this->board = new Board();
-
     }
 
     public function testCanSetACell()
     {
-        $this->board->set([0, 0], $this->john);
+        $this->board->set([0, 0], 'X');
         $expectedGrid = [
             ['X', '', ''],
             ['', '', ''],
@@ -30,9 +23,9 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
     public function testCanDisplayBoardAsString()
     {
-        $this->board->set([0, 0], $this->john);
-        $this->board->set([1, 1], $this->al);
-        $this->board->set([1, 2], $this->al);
+        $this->board->set([0, 0], 'X');
+        $this->board->set([1, 1], 'O');
+        $this->board->set([1, 2], 'O');
         $expectedString = "\n" .
             "\n      1     2     3  " . 
             "\n                     " . 
