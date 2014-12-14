@@ -39,7 +39,7 @@ class Board
 
     public function toString()
     {
-        $coordinates = ["A", "B", "C"];
+        $coordIndications = ["A", "B", "C"];
         $result = "\n" .
             "\n      1     2     3  " . 
             "\n                     ";
@@ -47,23 +47,21 @@ class Board
         $boardAsArray = $this->toArray();
         $counter = 0;
         foreach ($boardAsArray as $row) {
+            // Turning empty cells into spaces
             foreach ($row as &$cell) {
                 if ($cell == "") {
                     $cell = " ";
                 }
             }
 
+            // Styling each row
             $result .=
                 "\n         |     |     " .
-                "\n      " . 
-                $row[0] .
-                "  |  " . 
-                $row[1] . 
-                "  |  " . 
-                $row[2] . 
-                "  " . "      " . $coordinates[$counter] .
+                "\n      " . $row[0] . "  |  " . $row[1] . "  |  " . $row[2] . "  " .
+                "      " . $coordIndications[$counter] .
                 "\n         |     |     ";
 
+            // For the first two rows we need to add delimiter
             if ($counter < 2) {
                 $result .=
                     "\n    -----------------";
