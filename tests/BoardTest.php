@@ -1,5 +1,7 @@
 <?php
 
+namespace TicTacToe;
+
 class BoardTest extends \PHPUnit_Framework_TestCase
 {
     public function testCanSetACell()
@@ -16,104 +18,37 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             ['', '', ''],
         ];
 
-        $this->assertEquals($expectedGrid, $board->current());
-    }
-}
-
-class Board
-{
-    public function __construct()
-    {
-        $this->board = [
-            new Cell(0, 0, ''),
-            new Cell(0, 1, ''),
-            new Cell(0, 2, ''),
-            new Cell(1, 0, ''),
-            new Cell(1, 1, ''),
-            new Cell(1, 2, ''),
-            new Cell(2, 0, ''),
-            new Cell(2, 1, ''),
-            new Cell(2, 2, ''),
-        ];
+        $this->assertEquals($expectedGrid, $board->toArray());
     }
 
-    public function set($coords, $player)
+    public function testCanDisplayBoardAsString()
     {
-        $cell = $this->cellLookup($coords);
-        $cell->setValue($player->getPlaceholder());
-    }
+        $john = new Player('John');
+        $john->setPlaceholder('X');
 
-    private function cellLookup($coords)
-    {
-        foreach ($this->board as $cell) {
-            if ($cell->getCoords() === $coords) {
-                return $cell;
-            }
-        }
-    }
+        $al = new Player('Al');
+        $al->setPlaceholder('O');
 
-    public function current()
-    {
-        $result = [];
+        $board = new Board();
+        $board->set([0, 0], $john);
+        $board->set([1, 1], $al);
+        $board->set([1, 2], $al);
 
-        foreach ($this->board as $cell) {
-            $coords = $cell->getCoords();
-            $result[$coords[0]][$coords[1]] = $cell->getValue();
-        }
+        $expectedString = "\n" .
+            "\n      1     2     3  " . 
+            "\n                     " . 
+            "\n         |     |     " . 
+            "\n      X  |     |     " . "      A" .
+            "\n         |     |     " . 
+            "\n    -----------------" .
+            "\n         |     |     " .
+            "\n         |  O  |  O  " . "      B" .
+            "\n         |     |     " .
+            "\n    -----------------" .
+            "\n         |     |     " . 
+            "\n         |     |     " . "      C" .
+            "\n         |     |     \n\n";
 
-        return $result;
-    }
-}
-
-class Cell
-{
-    private $x;
-    private $y;
-    private $value;
-
-    public function __construct($x, $y, $value)
-    {
-        $this->x = $x;
-        $this->y = $y;
-        $this->value = $value;
-    }
-
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
-
-    public function getCoords()
-    {
-        return [
-            $this->x,
-            $this->y,
-        ];
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-}
-
-class Player
-{
-    private $name;
-    private $placeholder;
-
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    public function setPlaceholder($placeholder)
-    {
-        $this->placeholder = $placeholder;
-    }
-
-    public function getPlaceholder()
-    {
-        return $this->placeholder;
+        $this->assertEquals($expectedString, $board->toString());
     }
 }
