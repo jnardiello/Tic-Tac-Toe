@@ -4,36 +4,35 @@ namespace TicTacToe;
 
 class BoardTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->john = new Player('John');
+        $this->john->setPlaceholder('X');
+
+        $this->al = new Player('Al');
+        $this->al->setPlaceholder('O');
+
+        $this->board = new Board();
+
+    }
+
     public function testCanSetACell()
     {
-        $player = new Player('John');
-        $player->setPlaceholder('X');
-
-        $board = new Board();
-        $board->set([0, 0], $player);
-
+        $this->board->set([0, 0], $this->john);
         $expectedGrid = [
             ['X', '', ''],
             ['', '', ''],
             ['', '', ''],
         ];
 
-        $this->assertEquals($expectedGrid, $board->toArray());
+        $this->assertEquals($expectedGrid, $this->board->toArray());
     }
 
     public function testCanDisplayBoardAsString()
     {
-        $john = new Player('John');
-        $john->setPlaceholder('X');
-
-        $al = new Player('Al');
-        $al->setPlaceholder('O');
-
-        $board = new Board();
-        $board->set([0, 0], $john);
-        $board->set([1, 1], $al);
-        $board->set([1, 2], $al);
-
+        $this->board->set([0, 0], $this->john);
+        $this->board->set([1, 1], $this->al);
+        $this->board->set([1, 2], $this->al);
         $expectedString = "\n" .
             "\n      1     2     3  " . 
             "\n                     " . 
@@ -49,6 +48,6 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             "\n         |     |     " . "      C" .
             "\n         |     |     \n\n";
 
-        $this->assertEquals($expectedString, $board->toString());
+        $this->assertEquals($expectedString, $this->board->toString());
     }
 }
