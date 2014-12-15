@@ -175,6 +175,16 @@ class Board
         ];
     }
 
+    public function all()
+    {
+        return $this->board;
+    }
+
+    public function get($coords)
+    {
+        return $this->cellLookup($coords);
+    }
+
     private function cellLookup($coords)
     {
         foreach ($this->board as $cell) {

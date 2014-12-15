@@ -1,5 +1,6 @@
 /vendor/
 composer.lock
 *.swp
+*.swo
 gulpfile.js
 node_modules
