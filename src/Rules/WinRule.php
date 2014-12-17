@@ -35,8 +35,11 @@ class WinRule implements Rule
         foreach ($cells as $cell) {
             $currentPlayerBusyCellsCount = $this->countMyCells($cell);
             if ($currentPlayerBusyCellsCount == $board->getDimension() - self::MOVE_TO_WIN) {
-                $winningCell = $this->getAvailableSpots($cell)[0];
-                return $winningCell->getCoords();
+                $availableSpots = $this->getAvailableSpots($cell);
+                if (!empty($availableSpots)) {
+                    $winningCell = $this->getAvailableSpots($cell)[0];
+                    return $winningCell->getCoords();
+                }
             }
         }
 
