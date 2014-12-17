@@ -46,6 +46,27 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('X', $thirdCell->getValue());
     }
 
+    /**
+     * @dataProvider coordinatesProvider
+     */
+    public function testBlockRuleCanBeAppliedOverRow($fixtures, $expectedCoords)
+    {
+        $board = new Board();
+        foreach ($fixtures as $fixture) {
+            $board->set($fixture, '0');
+        }
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $ai->move($nextMoveCoords);
+
+        $thirdCell = $board->get($expectedCoords);
+        $this->assertEquals('X', $thirdCell->getValue());
+    }
+
     public function testNoWinningMoveExists()
     {
         $board = new Board();
@@ -60,20 +81,4 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(!isset($nextMoveCoords));
     }
 
-    public function testBlockRuleCanBeAppliedOverRow()
-    {
-        $board = new Board();
-        $board->set([0, 0], 'O');
-        $board->set([0, 1], 'O');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $ai->move($nextMoveCoords);
-
-        $thirdCell = $board->get([0, 2]);
-        $this->assertEquals('X', $thirdCell->getValue());
-    }
 }
