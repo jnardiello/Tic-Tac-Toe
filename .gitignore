@@ -2,5 +2,6 @@
 composer.lock
 *.swp
 *.swo
+*.swn
 gulpfile.js
 node_modules
