@@ -185,6 +185,11 @@ class Board
         return $this->cellLookup($coords);
     }
 
+    public function getDimension()
+    {
+        return self::DIMENSION;
+    }
+
     private function cellLookup($coords)
     {
         foreach ($this->board as $cell) {

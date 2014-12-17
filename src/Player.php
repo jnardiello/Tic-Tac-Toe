@@ -24,15 +24,17 @@ class Player
         return $this;
     }
 
-    public function move($coordString)
+    public function move($coords)
     {
-        $rawCoords = str_split($coordString);
-        $coordMapper = $this->getCoordinatesMapper();
+        if (!is_array($coords)) {
+            $rawCoords = str_split($coords);
+            $coordMapper = $this->getCoordinatesMapper();
+            $coords = [
+                $coordMapper[$rawCoords[0]],
+                $rawCoords[1] - 1
+            ];
+        }
 
-        $coords = [
-            $coordMapper[$rawCoords[0]],
-            $rawCoords[1] - 1
-        ];
 
         $this->board->set($coords, $this->placeholder);
     }

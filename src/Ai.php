@@ -14,7 +14,7 @@ class Ai extends Player
     public function deduct()
     {
         $currentBoard = $this->board;
-        $winRule = new WinRule();
-        return $winRule->execute($currentBoard);
+        $winRule = new WinRule($this);
+        return $winRule->apply($currentBoard);
     }
 }
