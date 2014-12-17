@@ -4,7 +4,7 @@ namespace TicTacToe;
 
 class AiTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAiCanApplyWinRuleOnASingleRow()
+    public function testAiCanApplyWinRuleByRow()
     {
         $board = new Board();
         $board->set([0, 0], 'X');
@@ -21,12 +21,11 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('X', $thirdCell->getValue());
     }
 
-    public function testAiCanApplyWinRuleOnSecondRow()
+    public function testAiCanApplyWinRuleByColumn()
     {
-        $this->markTestIncomplete();
         $board = new Board();
-        $board->set([1, 1], 'X');
-        $board->set([1, 2], 'X');
+        $board->set([0, 0], 'X');
+        $board->set([1, 0], 'X');
 
         $ai = new Ai();
         $ai->setPlaceholder('X')
@@ -35,7 +34,24 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $nextMoveCoords = $ai->deduct();
         $ai->move($nextMoveCoords);
 
-        $firstCell = $board->get([1, 0]);
+        $firstCell = $board->get([2, 0]);
+        $this->assertEquals('X', $firstCell->getValue());
+    }
+
+    public function testAiCanApplyWinRuleByDiagonal()
+    {
+        $board = new Board();
+        $board->set([0, 0], 'X');
+        $board->set([1, 1], 'X');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $ai->move($nextMoveCoords);
+
+        $firstCell = $board->get([2, 2]);
         $this->assertEquals('X', $firstCell->getValue());
     }
 }

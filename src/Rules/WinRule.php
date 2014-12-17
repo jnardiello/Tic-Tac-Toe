@@ -4,6 +4,8 @@ namespace TicTacToe\Rules;
 
 class WinRule implements Rule
 {
+    const MOVE_TO_WIN = 1;
+
     private $player;
 
     public function __construct(\TicTacToe\Ai $al)
@@ -13,11 +15,27 @@ class WinRule implements Rule
 
     public function apply(\TicTacToe\Board $board)
     {
-        $rows = $board->rows();
-        foreach ($rows as $row) {
-            $currentPlayerBusyCellsCount = $this->countMyCells($row);
-            if ($currentPlayerBusyCellsCount == $board->getDimension() - 1) {
-                $winningCell = $this->getAvailableSpots($row)[0];
+        $xxx = [];
+        $xxx['rows'] = $board->rows();
+        $xxx['columns'] = $board->columns();
+        $xxx['diagonals'] = $board->diagonals();
+
+        foreach ($xxx as $cells) {
+            $winningSpot = $this->getWinningSpot($board, $cells);
+            if ($winningSpot) {
+                return $winningSpot;
+            }
+        }
+
+        return false;
+    }
+
+    private function getWinningSpot($board, $cells)
+    {
+        foreach ($cells as $cell) {
+            $currentPlayerBusyCellsCount = $this->countMyCells($cell);
+            if ($currentPlayerBusyCellsCount == $board->getDimension() - self::MOVE_TO_WIN) {
+                $winningCell = $this->getAvailableSpots($cell)[0];
                 return $winningCell->getCoords();
             }
         }
