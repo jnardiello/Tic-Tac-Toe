@@ -3,6 +3,7 @@
 namespace TicTacToe;
 
 use TicTacToe\Rules\WinRule;
+use TicTacToe\Rules\BlockRule;
 
 class Ai extends Player
 {
@@ -13,8 +14,14 @@ class Ai extends Player
 
     public function deduct()
     {
-        $currentBoard = $this->board;
         $winRule = new WinRule($this);
-        return $winRule->apply($currentBoard);
+        $blockRule = new BlockRule($this);
+        $currentBoard = $this->board;
+
+        if ($move = $winRule->apply($currentBoard)) {
+            return $move;
+        } else if($move = $blockRule->apply($currentBoard)) {
+            return $move;
+        }
     }
 }

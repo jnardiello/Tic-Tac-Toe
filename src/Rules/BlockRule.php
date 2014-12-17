@@ -2,9 +2,9 @@
 
 namespace TicTacToe\Rules;
 
-class WinRule implements Rule
+class BlockRule implements Rule
 {
-    const MOVE_TO_WIN = 1;
+    const MOVE_TO_LOSE = 1;
 
     private $player;
 
@@ -21,20 +21,20 @@ class WinRule implements Rule
         $spaceToExplore['diagonals'] = $board->diagonals();
 
         foreach ($spaceToExplore as $cells) {
-            $winningSpot = $this->getWinningSpot($board, $cells);
-            if ($winningSpot) {
-                return $winningSpot;
+            $blockingSpot = $this->moveHereOrLose($board, $cells);
+            if ($blockingSpot) {
+                return $blockingSpot;
             }
         }
 
         return false;
     }
 
-    private function getWinningSpot($board, $cells)
+    private function moveHereOrLose($board, $cells)
     {
         foreach ($cells as $cell) {
-            $currentPlayerBusyCellsCount = $this->countMyCells($cell);
-            if ($currentPlayerBusyCellsCount == $board->getDimension() - self::MOVE_TO_WIN) {
+            $currentPlayerBusyCellsCount = $this->countOthersCells($cell);
+            if ($currentPlayerBusyCellsCount == $board->getDimension() - self::MOVE_TO_LOSE) {
                 $winningCell = $this->getAvailableSpots($cell)[0];
                 return $winningCell->getCoords();
             }
@@ -55,11 +55,13 @@ class WinRule implements Rule
         return $result;
     }
 
-    private function countMyCells(array $cells)
+    private function countOthersCells(array $cells)
     {
         $result = [];
         foreach ($cells as $cell) {
-            if ($cell->getValue() == $this->player->getPlaceholder()) {
+            if ($cell->getValue() != "" 
+                && 
+                $cell->getValue() != $this->player->getPlaceholder()) {
                 $result[] = $cell;
             }
         }

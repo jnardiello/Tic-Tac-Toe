@@ -66,6 +66,23 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $nextMoveCoords = $ai->deduct();
 
-        $this->assertFalse($nextMoveCoords);
+        $this->assertTrue(!isset($nextMoveCoords));
+    }
+
+    public function testBlockRuleCanBeAppliedOverRow()
+    {
+        $board = new Board();
+        $board->set([0, 0], 'O');
+        $board->set([0, 1], 'O');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $ai->move($nextMoveCoords);
+
+        $thirdCell = $board->get([0, 2]);
+        $this->assertEquals('X', $thirdCell->getValue());
     }
 }
