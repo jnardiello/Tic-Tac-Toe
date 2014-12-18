@@ -97,6 +97,23 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRows, $result);
     }
 
+    public function testCanGetAvailableSpots()
+    {
+        $this->board->set([0, 0], 'X');
+        $this->board->set([0, 1], 'X');
+        $this->board->set([0, 2], 'X');
+        $this->board->set([1, 0], 'X');
+        $this->board->set([1, 1], 'X');
+        $this->board->set([1, 2], 'X');
+        $this->board->set([2, 0], 'X');
+        $this->board->set([2, 1], 'X');
+
+        $freeCells = $this->board->getAvailableSpots();
+
+        $this->assertEquals(1, count($freeCells));
+        $this->assertEquals([2, 2], $freeCells[0]->getCoords());
+    }
+
     private function cellToArray(array $cellsArray)
     {
         $result = [];

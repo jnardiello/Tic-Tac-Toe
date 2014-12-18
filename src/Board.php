@@ -190,6 +190,18 @@ class Board
         return self::DIMENSION;
     }
 
+    public function getAvailableSpots()
+    {
+        $result = [];
+        foreach ($this->board as $cell) {
+            if ($cell->getValue() == '') {
+                $result[] = $cell;
+            }
+        }
+
+        return $result;
+    }
+
     private function cellLookup($coords)
     {
         foreach ($this->board as $cell) {
