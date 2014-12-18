@@ -90,6 +90,19 @@ class Board
         }
     }
 
+    public function column($coords)
+    {
+        $allColumns = $this->columns();
+
+        foreach ($allColumns as $column) {
+            foreach ($column as $cell) {
+                if ($cell->getCoords() == $coords) {
+                    return $column;
+                }
+            }
+        }
+    }
+
     public function rows()
     {
         $rowsCoords = [
