@@ -97,6 +97,23 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRows, $result);
     }
 
+    public function testCanGetCurrentRowForCell()
+    {
+        $row = $this->board->row([0, 0]);
+        $expectedCellsCoords = [
+            [0, 0],
+            [0, 1],
+            [0, 2],
+        ];
+        $actualCellsCoords = [];
+
+        foreach ($row as $cell) {
+            $actualCellsCoords[] = $cell->getCoords();
+        }
+
+        $this->assertSame($expectedCellsCoords, $actualCellsCoords);
+    }
+
     public function testCanGetAvailableSpots()
     {
         $this->board->set([0, 0], 'X');
@@ -127,5 +144,4 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
         return $result;
     }
-
 }

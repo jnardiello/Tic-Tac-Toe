@@ -77,6 +77,19 @@ class Board
         return $result;
     }
 
+    public function row($coords)
+    {
+        $allRows = $this->rows();
+
+        foreach ($allRows as $row) {
+            foreach ($row as $cell) {
+                if ($cell->getCoords() == $coords) {
+                    return $row;
+                }
+            }
+        }
+    }
+
     public function rows()
     {
         $rowsCoords = [
