@@ -103,6 +103,19 @@ class Board
         }
     }
 
+    public function diagonal($coords)
+    {
+        $allDiagonals = $this->diagonals();
+
+        foreach ($allDiagonals as $diagonal) {
+            foreach ($diagonal as $cell) {
+                if ($cell->getCoords() == $coords) {
+                    return $diagonal;
+                }
+            }
+        }
+    }
+
     public function rows()
     {
         $rowsCoords = [

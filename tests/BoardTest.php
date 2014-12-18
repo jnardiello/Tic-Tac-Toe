@@ -97,7 +97,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRows, $result);
     }
 
-    public function testCanGetCurrentRowForCell()
+    public function testCanGetCurrentRowForCoords()
     {
         $row = $this->board->row([0, 0]);
         $expectedCellsCoords = [
@@ -114,9 +114,9 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedCellsCoords, $actualCellsCoords);
     }
 
-    public function testCanGetCurrentColumnForCell()
+    public function testCanGetCurrentColumnForCoords()
     {
-        $row = $this->board->column([0, 0]);
+        $column = $this->board->column([0, 0]);
         $expectedCellsCoords = [
             [0, 0],
             [1, 0],
@@ -124,7 +124,24 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         ];
         $actualCellsCoords = [];
 
-        foreach ($row as $cell) {
+        foreach ($column as $cell) {
+            $actualCellsCoords[] = $cell->getCoords();
+        }
+
+        $this->assertSame($expectedCellsCoords, $actualCellsCoords);
+    }
+
+    public function testCanGetCurrentDiagonalFromCoords()
+    {
+        $diagonal = $this->board->diagonal([0, 0]);
+        $expectedCellsCoords = [
+            [0, 0],
+            [1, 1],
+            [2, 2],
+        ];
+        $actualCellsCoords = [];
+
+        foreach ($diagonal as $cell) {
             $actualCellsCoords[] = $cell->getCoords();
         }
 
