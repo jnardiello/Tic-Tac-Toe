@@ -37,7 +37,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $ai = new Ai();
         $ai->setPlaceholder('X')
-            ->setBoard($board);
+           ->setBoard($board);
 
         $winningMovesCoords = $ai->deduct();
         $ai->move($winningMovesCoords[0]);
@@ -58,7 +58,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $ai = new Ai();
         $ai->setPlaceholder('X')
-            ->setBoard($board);
+           ->setBoard($board);
 
         $nextMoveCoords = $ai->deduct();
         $ai->move($nextMoveCoords);
@@ -77,7 +77,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $ai = new Ai();
         $ai->setPlaceholder('X')
-            ->setBoard($board);
+           ->setBoard($board);
 
         $nextMoveCoords = $ai->deduct();
         $expectedCoordsRange = [
@@ -85,5 +85,22 @@ class AiTest extends \PHPUnit_Framework_TestCase
             [1, 0],
         ];
         $this->assertTrue(in_array($nextMoveCoords, $expectedCoordsRange));
+    }
+
+    public function testAiCanBlockOpponentForkAfterRunningBoardSimulation()
+    {
+        $board = new Board();
+        $board->set([0, 2], 'O');
+        $board->set([1, 0], 'O');
+        $board->set([1, 1], 'X');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [0, 0];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
 }

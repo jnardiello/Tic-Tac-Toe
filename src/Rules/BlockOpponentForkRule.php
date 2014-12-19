@@ -5,7 +5,7 @@ namespace TicTacToe\Rules;
 use TicTacToe\Board;
 use TicTacToe\Ai;
 
-class ForkRule implements Rule
+class BlockOpponentForkRule implements Rule
 {
     public function __construct(\TicTacToe\Ai $al)
     {
@@ -17,10 +17,9 @@ class ForkRule implements Rule
         $availableCells = $board->getAvailableSpots();
 
         foreach ($availableCells as $cell) {
-            $opportunitiesTheNewCellWillGenerate = $this->simulate($cell, $board);
-            if (is_array($opportunitiesTheNewCellWillGenerate) 
-                &&
-                count($opportunitiesTheNewCellWillGenerate) == 2) {
+            $opponentOpportunitiesCurrentCellWillGenerate = $this->simulate($cell, $board);
+
+            if (count($opponentOpportunitiesCurrentCellWillGenerate) == 2) {
                 return $cell->getCoords();
             }
         }
@@ -31,10 +30,10 @@ class ForkRule implements Rule
     private function simulate($currentCell, $board)
     {
         $simulatedBoard = $this->cloneBoard($board);
-        $simulatedBoard->set($currentCell->getCoords(), $this->player->getPlaceholder());
+        $simulatedBoard->set($currentCell->getCoords(), $this->getOpponentPlaceholder($board));
 
         $ai = new Ai();
-        $ai->setPlaceholder('X')
+        $ai->setPlaceholder($this->getOpponentPlaceholder($board))
             ->setBoard($simulatedBoard);
         $winningMovesCoords = $ai->applyWinRule();
 
@@ -43,6 +42,15 @@ class ForkRule implements Rule
         }
 
         return false;
+    }
+
+    private function getOpponentPlaceholder($board)
+    {
+        foreach ($board->board as $cell) {
+            if ($cell->getValue() != $this->player->getPlaceholder() && $cell->getValue() != '') {
+                return $cell->getValue();
+            }
+        }
     }
 
     private function cloneBoard($board)

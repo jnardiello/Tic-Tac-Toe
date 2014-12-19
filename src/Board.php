@@ -27,6 +27,12 @@ class Board
         $cell->setValue($placeholder);
     }
 
+    public function hello($coords)
+    {
+        $cell = $this->cellLookup($coords);
+        $cell->setValue('');
+    }
+
     public function toArray()
     {
         $result = [];
