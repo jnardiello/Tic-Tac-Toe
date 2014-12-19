@@ -67,23 +67,8 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('X', $thirdCell->getValue());
     }
 
-    public function testNoWinningMoveExists()
-    {
-        $board = new Board();
-        $board->set([0, 0], 'X');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-
-        $this->assertTrue(!isset($nextMoveCoords));
-    }
-
     public function testAiCanForkAfterRunningBoardSimulation()
     {
-        $this->markTestIncomplete();
         $board = new Board();
         $board->set([0, 2], 'O');
         $board->set([2, 1], 'O');

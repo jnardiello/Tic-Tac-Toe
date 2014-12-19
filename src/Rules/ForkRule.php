@@ -3,6 +3,7 @@
 namespace TicTacToe\Rules;
 
 use TicTacToe\SimulatedBoard;
+use TicTacToe\Ai;
 
 class ForkRule implements Rule
 {
@@ -13,23 +14,31 @@ class ForkRule implements Rule
 
     public function apply(\TicTacToe\Board $board)
     {
-        /* $availableCells = $board->getAvailableSpots(); */
+        $availableCells = $board->getAvailableSpots();
 
-        /* foreach ($availableCells as $cell) { */
-        /*     $opportunitiesTheNewCellWillGenerate = $this->simulate($cell); */
+        foreach ($availableCells as $cell) {
+            $opportunitiesTheNewCellWillGenerate = count($this->simulate($cell, $board));
 
-        /*     if ($opportunitiesTheNewCellWillGenerate == 2) { */
-        /*         return $cell->getCoords(); */
-        /*     } */
-        /* } */
-        return true;
+            if ($opportunitiesTheNewCellWillGenerate == 2) {
+                return $cell->getCoords();
+            }
+        }
     }
 
-    private function simulate($cell)
+    private function simulate($currentCell, $board)
     {
-        /* $simulatedBoard = new SimulatedBoard($board); */
-        /* $simulatedBoard->set($cell); */
+        $simulatedBoard = new SimulatedBoard($board);
+        $simulatedBoard->set($currentCell->getCoords(), $this->player->getPlaceholder());
 
-        /* return $simulatedBoard->newOpportunitiesFor($this->player); */
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($simulatedBoard);
+        $winningMovesCoords = $ai->deduct();
+
+        if (count($winningMovesCoords) > 0) {
+            return $winningMovesCoords;
+        }
+
+        return false;
     }
 }

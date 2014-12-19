@@ -25,10 +25,10 @@ class Ai extends Player
         } else if ($move = $blockRule->apply($currentBoard)) {
             return $move;
         } 
-        /* else if ($move = $forkRule->apply($currentBoard)) { */
-        /*     return $move; */
-        /* } */
+        else if ($move = $forkRule->apply($currentBoard)) {
+            return $move;
+        }
+
+        return false;
     }
-
-
 }
