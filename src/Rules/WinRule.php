@@ -20,11 +20,16 @@ class WinRule implements Rule
         $spaceToExplore['columns'] = $board->columns();
         $spaceToExplore['diagonals'] = $board->diagonals();
 
+        $results = [];
         foreach ($spaceToExplore as $cells) {
             $winningSpot = $this->getWinningSpot($board, $cells);
             if ($winningSpot) {
-                return $winningSpot;
+                $results[] = $winningSpot;
             }
+        }
+
+        if (count($results) > 0) {
+            return $results;
         }
 
         return false;

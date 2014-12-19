@@ -4,14 +4,18 @@ namespace TicTacToe;
 
 class SimulatedBoardTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCanSetCellFromCellClass()
+    public function testCanGetOpportunities()
     {
-        $cell = new Cell(0, 0, 'X');
-        $simulatedBoard = new SimulatedBoard();
+        $this->markTestSkipped();
+        $board = new Board();
+        $board->set([2, 0], 'X');
+        $board->set([0, 2], 'X');
 
-        $simulatedBoard->setVirtual($cell);
-        $simulatedBoardCell = $simulatedBoard->get([0, 0]);
+        $simulatedBoard = new SimulatedBoard($board);
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($simulatedBoard);
 
-        $this->assertEquals('X', $simulatedBoardCell->getValue());
+        $this->assertEquals(2, $simulatedBoard->newOpportunitiesFor([0, 0], $ai));
     }
 }
