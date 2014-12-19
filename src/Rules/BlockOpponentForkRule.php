@@ -3,6 +3,7 @@
 namespace TicTacToe\Rules;
 
 use TicTacToe\Board;
+use TicTacToe\SimulatedBoard;
 use TicTacToe\Ai;
 
 class BlockOpponentForkRule implements Rule
@@ -29,7 +30,7 @@ class BlockOpponentForkRule implements Rule
 
     private function simulate($currentCell, $board)
     {
-        $simulatedBoard = $this->cloneBoard($board);
+        $simulatedBoard = new SimulatedBoard($board);
         $simulatedBoard->set($currentCell->getCoords(), $this->getOpponentPlaceholder($board));
 
         $ai = new Ai();
@@ -51,15 +52,5 @@ class BlockOpponentForkRule implements Rule
                 return $cell->getValue();
             }
         }
-    }
-
-    private function cloneBoard($board)
-    {
-        $newBoard = new Board();
-        foreach ($board->all() as $cell) {
-            $newBoard->set($cell->getCoords(), $cell->getValue());
-        }
-
-        return $newBoard;
     }
 }
