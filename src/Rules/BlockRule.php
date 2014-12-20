@@ -15,44 +15,24 @@ class BlockRule implements Rule
 
     public function apply(\TicTacToe\Board $board)
     {
-        $spaceToExplore = [];
-        $spaceToExplore['rows'] = $board->rows();
-        $spaceToExplore['columns'] = $board->columns();
-        $spaceToExplore['diagonals'] = $board->diagonals();
+        $availableSpots = $board->getAvailableSpots();
 
-        foreach ($spaceToExplore as $cells) {
-            $blockingSpot = $this->moveHereOrLose($board, $cells);
-            if ($blockingSpot) {
-                return $blockingSpot;
+        foreach ($availableSpots as $cell) {
+            $row = $board->row($cell->getCoords());
+            if ($this->countOthersCells($row) == 2) {
+                return $cell->getCoords();
+            }
+            $column = $board->column($cell->getCoords());
+            if ($this->countOthersCells($column) == 2) {
+                return $cell->getCoords();
+            }
+            $diagonal = $board->diagonal($cell->getCoords());
+            if (isset($diagonal) && $this->countOthersCells($diagonal) == 2) {
+                return $cell->getCoords();
             }
         }
 
         return false;
-    }
-
-    private function moveHereOrLose($board, $cells)
-    {
-        foreach ($cells as $cell) {
-            $currentPlayerBusyCellsCount = $this->countOthersCells($cell);
-            if ($currentPlayerBusyCellsCount == $board->getDimension() - self::MOVE_TO_LOSE) {
-                $winningCell = $this->getAvailableSpots($cell)[0];
-                return $winningCell->getCoords();
-            }
-        }
-
-        return false;
-    }
-
-    private function getAvailableSpots(array $cells)
-    {
-        $result = [];
-        foreach ($cells as $cell) {
-            if ($cell->getValue() == '') {
-                $result[] = $cell;
-            }
-        }
-
-        return $result;
     }
 
     private function countOthersCells(array $cells)

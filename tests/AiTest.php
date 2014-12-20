@@ -133,4 +133,26 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
+
+    public function testEmptySide()
+    {
+        $board = new Board();
+        $board->set([0, 0], 'O');
+        $board->set([0, 1], 'X');
+        $board->set([0, 2], 'O');
+        $board->set([1, 1], 'X');
+        $board->set([1, 2], 'O');
+        $board->set([2, 0], 'X');
+        $board->set([2, 1], 'O');
+        $board->set([2, 2], 'X');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [1, 0];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
 }
