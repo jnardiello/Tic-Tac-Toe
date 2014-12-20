@@ -75,7 +75,7 @@ class TicTacToe
 
             $countedValues = array_count_values($diagonalArray);
             foreach ($countedValues as $key => $placeholderOccurrences) {
-                if ($placeholderOccurrences == 3) {
+                if ($placeholderOccurrences == 3 && $key != '') {
                     return $this->players[$key]->getName();
                 }
             }
@@ -90,14 +90,14 @@ class TicTacToe
 
             $countedValues = array_count_values($rowArray);
             foreach ($countedValues as $key => $placeholderOccurrences) {
-                if ($placeholderOccurrences == 3) {
+                if ($placeholderOccurrences == 3 && $key != '') {
                     return $this->players[$key]->getName();
                 }
             }
         }
 
         $columns = $this->board->columns();
-        foreach ($columns as $columns) {
+        foreach ($columns as $column) {
             $columnArray = [];
             foreach ($column as $cell) {
                 $columnArray[] = $cell->getValue();
@@ -105,10 +105,12 @@ class TicTacToe
 
             $countedValues = array_count_values($columnArray);
             foreach ($countedValues as $key => $placeholderOccurrences) {
-                if ($placeholderOccurrences == 3) {
+                if ($placeholderOccurrences == 3 && $key != '') {
                     return $this->players[$key]->getName();
                 }
             }
         }
+
+        return false;
     }
 }
