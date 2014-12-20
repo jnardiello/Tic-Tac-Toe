@@ -34,4 +34,28 @@ class TicTacToe
 
         return new TicTacToe($player, $ai, $board);
     }
+
+    public function moveAgainstAi($humanCoords)
+    {
+        $player = $this->getPlayer();
+        $player->move($humanCoords);
+
+        $ai = $this->getAi();
+        $ai->move($ai->deduct());
+    }
+
+    public function getBoard()
+    {
+        return $this->board;
+    }
+
+    public function getPlayer()
+    {
+        return $this->players[0];
+    }
+
+    public function getAi()
+    {
+        return $this->players[1];
+    }
 }
