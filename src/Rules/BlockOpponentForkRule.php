@@ -6,7 +6,7 @@ use TicTacToe\Board;
 use TicTacToe\SimulatedBoard;
 use TicTacToe\Ai;
 
-class BlockOpponentForkRule implements Rule
+class BlockOpponentForkRule extends ForkBaseRule implements Rule
 {
     public function __construct(\TicTacToe\Ai $al)
     {
@@ -18,28 +18,14 @@ class BlockOpponentForkRule implements Rule
         $availableCells = $board->getAvailableSpots();
 
         foreach ($availableCells as $cell) {
-            $opponentOpportunitiesCurrentCellWillGenerate = $this->simulate($cell, $board);
+            $opponentOpportunities = $this->simulate(
+                $cell, 
+                $board, 
+                $this->getOpponentPlaceholder($board));
 
-            if (count($opponentOpportunitiesCurrentCellWillGenerate) == 2) {
+            if (count($opponentOpportunities) == 2) {
                 return $cell->getCoords();
             }
-        }
-
-        return false;
-    }
-
-    private function simulate($currentCell, $board)
-    {
-        $simulatedBoard = new SimulatedBoard($board);
-        $simulatedBoard->set($currentCell->getCoords(), $this->getOpponentPlaceholder($board));
-
-        $ai = new Ai();
-        $ai->setPlaceholder($this->getOpponentPlaceholder($board))
-            ->setBoard($simulatedBoard);
-        $winningMovesCoords = $ai->applyWinRule();
-
-        if (count($winningMovesCoords) > 1) {
-            return $winningMovesCoords;
         }
 
         return false;
