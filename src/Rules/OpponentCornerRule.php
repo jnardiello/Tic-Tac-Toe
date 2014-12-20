@@ -27,11 +27,14 @@ class OpponentCornerRule implements Rule
 
         foreach ($cornersCoords as $key => $coords) {
             $cell = $board->get($coords);
+            $resultId = $oppositeCornersArrayIds[$key];
+            $oppositeCell = $board->get($cornersCoords[$resultId]);
 
             if ($cell->getValue() != $this->player->getPlaceholder() &&
-                $cell->getValue() != '') {
-                    $resultId = $oppositeCornersArrayIds[$key];
-                    return $cornersCoords[$resultId];
+                $cell->getValue() != '' &&
+                $oppositeCell->getValue() == '')
+            {
+                    return $oppositeCell;
             }
         }
 
