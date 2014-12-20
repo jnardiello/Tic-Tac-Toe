@@ -29,13 +29,13 @@ $winner = $tictactoe->checkForWinner();
 
 if ($winner == $playerName) {
     echo "\n\n" . $board->toString();
-    echo "\n\nYou Won!\n\n";
+    echo "\n\nAwesome {$playerName}, You Won!\n\n";
     return;
 }
 
 if ($winner == 'Draw') {
     echo "\n\n" . $board->toString();
-    echo "\n\nWell done! Draw!\n\n";
+    echo "\n\nWell done {$playerName}! Draw!\n\n";
     return;
 }
 
