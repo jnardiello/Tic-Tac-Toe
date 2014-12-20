@@ -10,7 +10,6 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
     {
         $this->player = new Player('John');
         $this->tictactoe = TicTacToe::againstAi($this->player);
-
     }
 
     public function testCanCreateGamePlayerVsAi()
@@ -44,6 +43,25 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'John',
+            $this->tictactoe->checkForWinner()
+        );
+    }
+
+    public function testPlayerAndAiDraw()
+    {
+        $board = $this->tictactoe->getBoard();
+        $board->set([0, 0], 'X');
+        $board->set([0, 1], 'O');
+        $board->set([0, 2], 'X');
+        $board->set([1, 1], 'O');
+        $board->set([1, 0], 'X');
+        $board->set([1, 2], 'O');
+        $board->set([2, 0], 'O');
+        $board->set([2, 1], 'X');
+        $board->set([2, 2], 'X');
+
+        $this->assertEquals(
+            'Draw',
             $this->tictactoe->checkForWinner()
         );
     }

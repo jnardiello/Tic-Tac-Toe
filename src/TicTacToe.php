@@ -99,6 +99,6 @@ class TicTacToe
              return $this->players[$key]->getName();
         }
 
-        return false;
+        return 'Draw';
     }
 }
