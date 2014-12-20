@@ -5,6 +5,8 @@ namespace TicTacToe;
 use TicTacToe\Rules\WinRule;
 use TicTacToe\Rules\BlockRule;
 use TicTacToe\Rules\ForkRule;
+use TicTacToe\Rules\CenterRule;
+use TicTacToe\Rules\OpponentCornerRule;
 use TicTacToe\Rules\BlockOpponentForkRule;
 
 class Ai extends Player
@@ -19,6 +21,8 @@ class Ai extends Player
         $winRule = new WinRule($this);
         $blockRule = new BlockRule($this);
         $forkRule = new ForkRule($this);
+        $centerRule = new CenterRule($this);
+        $opponentCornerRule = new OpponentCornerRule($this);
         $blockOpponentForkRule = new BlockOpponentForkRule($this);
         $currentBoard = $this->board;
 
@@ -29,6 +33,10 @@ class Ai extends Player
         } else if ($move = $forkRule->apply($currentBoard)) {
             return $move;
         } else if ($move = $blockOpponentForkRule->apply($currentBoard)) {
+            return $move;
+        } else if ($move = $centerRule->apply($currentBoard)) {
+            return $move;
+        } else if ($move = $opponentCornerRule->apply($currentBoard)) {
             return $move;
         }
 
