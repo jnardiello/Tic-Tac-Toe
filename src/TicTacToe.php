@@ -37,14 +37,18 @@ class TicTacToe
 
     public function moveAgainstAi($humanCoords)
     {
+        $sanitizer = new Sanitizer();
+        $healthyCoords = $sanitizer->check($humanCoords);
         $player = $this->getPlayer();
 
-        if (!$player->move($humanCoords)) {
+        if ( !$healthyCoords || !$player->move($healthyCoords)) {
             return false;
         }
 
-        $ai = $this->getAi();
-        $ai->move($ai->deduct());
+        if (count($this->board->getAvailableSpots()) > 0) {
+            $ai = $this->getAi();
+            $ai->move($ai->deduct());
+        }
 
         return true;
     }
