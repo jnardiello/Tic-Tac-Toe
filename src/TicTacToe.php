@@ -99,6 +99,10 @@ class TicTacToe
              return $this->players[$key]->getName();
         }
 
-        return 'Draw';
+        if (count($this->board->getAvailableSpots()) == 0) {
+            return 'Draw';
+        }
+
+        return false;
     }
 }

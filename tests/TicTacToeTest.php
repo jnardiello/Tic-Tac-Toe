@@ -66,6 +66,11 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testNobodyWonYet()
+    {
+        $this->assertFalse($this->tictactoe->checkForWinner());
+    }
+
     public function testNobodyYetWon()
     {
         $board = $this->tictactoe->getBoard();
