@@ -44,6 +44,11 @@ class Player
         return $this->placeholder;
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     private function getCoordinatesMapper()
     {
         return [

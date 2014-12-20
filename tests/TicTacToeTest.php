@@ -34,4 +34,17 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expectedBoard, $board->toArray());
     }
+
+    public function testPlayerOrAiHaveWon()
+    {
+        $board = $this->tictactoe->getBoard();
+        $board->set([0, 0], 'X');
+        $board->set([1, 1], 'X');
+        $board->set([2, 2], 'X');
+
+        $this->assertEquals(
+            'John',
+            $this->tictactoe->checkForWinner()
+        );
+    }
 }

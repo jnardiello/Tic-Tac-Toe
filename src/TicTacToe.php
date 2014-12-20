@@ -12,8 +12,8 @@ class TicTacToe
     private function __construct($firstPlayer, $secondPlayer, $board)
     {
         $this->board = $board;
-        $this->players[] = $firstPlayer;
-        $this->players[] = $secondPlayer;
+        $this->players['X'] = $firstPlayer;
+        $this->players['O'] = $secondPlayer;
     }
 
     public function getPlayers()
@@ -51,11 +51,64 @@ class TicTacToe
 
     public function getPlayer()
     {
-        return $this->players[0];
+        return $this->players['X'];
     }
 
     public function getAi()
     {
-        return $this->players[1];
+        return $this->players['O'];
+    }
+
+    public function checkForWinner()
+    {
+        $player = $this->getPlayer();
+        $ai = $this->getAi();
+        $playerPlaceholder = $player->getPlaceholder();
+        $aiPlaceholder = $ai->getPlaceholder();
+
+        $diagonals = $this->board->diagonals();
+        foreach ($diagonals as $diagonal) {
+            $diagonalArray = [];
+            foreach ($diagonal as $cell) {
+                $diagonalArray[] = $cell->getValue();
+            }
+
+            $countedValues = array_count_values($diagonalArray);
+            foreach ($countedValues as $key => $placeholderOccurrences) {
+                if ($placeholderOccurrences == 3) {
+                    return $this->players[$key]->getName();
+                }
+            }
+        }
+
+        $rows = $this->board->rows();
+        foreach ($rows as $row) {
+            $rowArray = [];
+            foreach ($row as $cell) {
+                $rowArray[] = $cell->getValue();
+            }
+
+            $countedValues = array_count_values($rowArray);
+            foreach ($countedValues as $key => $placeholderOccurrences) {
+                if ($placeholderOccurrences == 3) {
+                    return $this->players[$key]->getName();
+                }
+            }
+        }
+
+        $columns = $this->board->columns();
+        foreach ($columns as $columns) {
+            $columnArray = [];
+            foreach ($column as $cell) {
+                $columnArray[] = $cell->getValue();
+            }
+
+            $countedValues = array_count_values($columnArray);
+            foreach ($countedValues as $key => $placeholderOccurrences) {
+                if ($placeholderOccurrences == 3) {
+                    return $this->players[$key]->getName();
+                }
+            }
+        }
     }
 }
