@@ -40,7 +40,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
            ->setBoard($board);
 
         $winningMovesCoords = $ai->deduct();
-        $ai->move($winningMovesCoords[0]);
+        $ai->move($winningMovesCoords);
 
         $thirdCell = $board->get($expectedCoords);
         $this->assertEquals('X', $thirdCell->getValue());

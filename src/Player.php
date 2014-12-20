@@ -26,6 +26,12 @@ class Player
 
     public function move($coords)
     {
+        // Win Rule returns an array of possible winning moves
+        // we simply pick the first one. Any would be ok.
+        if (is_array($coords[0])) {
+            $coords = $coords[0];
+        }
+
         if (!is_array($coords)) {
             $rawCoords = str_split($coords);
             $coordMapper = $this->getCoordinatesMapper();
