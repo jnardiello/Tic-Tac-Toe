@@ -34,7 +34,7 @@ class OpponentCornerRule implements Rule
                 $cell->getValue() != '' &&
                 $oppositeCell->getValue() == '')
             {
-                    return $oppositeCell;
+                    return $oppositeCell->getCoords();
             }
         }
 
