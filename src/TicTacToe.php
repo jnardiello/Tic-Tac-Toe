@@ -59,14 +59,8 @@ class TicTacToe
         return $this->players['O'];
     }
 
-    public function checkForWinner()
+    private function checkOccurrencesOfThree($diagonals)
     {
-        $player = $this->getPlayer();
-        $ai = $this->getAi();
-        $playerPlaceholder = $player->getPlaceholder();
-        $aiPlaceholder = $ai->getPlaceholder();
-
-        $diagonals = $this->board->diagonals();
         foreach ($diagonals as $diagonal) {
             $diagonalArray = [];
             foreach ($diagonal as $cell) {
@@ -76,39 +70,33 @@ class TicTacToe
             $countedValues = array_count_values($diagonalArray);
             foreach ($countedValues as $key => $placeholderOccurrences) {
                 if ($placeholderOccurrences == 3 && $key != '') {
-                    return $this->players[$key]->getName();
+                    return $key;
                 }
             }
+        }
+
+    }
+
+    public function checkForWinner()
+    {
+        $player = $this->getPlayer();
+        $ai = $this->getAi();
+        $playerPlaceholder = $player->getPlaceholder();
+        $aiPlaceholder = $ai->getPlaceholder();
+
+        $diagonals = $this->board->diagonals();
+        if ($key = $this->checkOccurrencesOfThree($diagonals)) {
+             return $this->players[$key]->getName();
         }
 
         $rows = $this->board->rows();
-        foreach ($rows as $row) {
-            $rowArray = [];
-            foreach ($row as $cell) {
-                $rowArray[] = $cell->getValue();
-            }
-
-            $countedValues = array_count_values($rowArray);
-            foreach ($countedValues as $key => $placeholderOccurrences) {
-                if ($placeholderOccurrences == 3 && $key != '') {
-                    return $this->players[$key]->getName();
-                }
-            }
+        if ($key = $this->checkOccurrencesOfThree($rows)) {
+             return $this->players[$key]->getName();
         }
 
         $columns = $this->board->columns();
-        foreach ($columns as $column) {
-            $columnArray = [];
-            foreach ($column as $cell) {
-                $columnArray[] = $cell->getValue();
-            }
-
-            $countedValues = array_count_values($columnArray);
-            foreach ($countedValues as $key => $placeholderOccurrences) {
-                if ($placeholderOccurrences == 3 && $key != '') {
-                    return $this->players[$key]->getName();
-                }
-            }
+        if ($key = $this->checkOccurrencesOfThree($columns)) {
+             return $this->players[$key]->getName();
         }
 
         return false;
