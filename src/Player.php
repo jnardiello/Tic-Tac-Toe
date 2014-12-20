@@ -35,8 +35,24 @@ class Player
             ];
         }
 
+        if (in_array($coords, $this->freeSpotsArray())) {
+            $this->board->set($coords, $this->placeholder);
+            return true;
+        }
 
-        $this->board->set($coords, $this->placeholder);
+        return false;
+    }
+
+    private function freeSpotsArray()
+    {
+        $availableSpots = $this->board->getAvailableSpots();
+        $freeSpots = [];
+
+        foreach ($availableSpots as $cell) {
+            $freeSpots[] = $cell->getCoords();
+        }
+
+        return $freeSpots;
     }
 
     public function getPlaceholder()
