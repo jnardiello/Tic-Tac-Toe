@@ -1,10 +1,13 @@
 ## PHP Tic Tac Toe
 
 ### Requirements
-You will need to have `PHP 5x` installed on your machine. You can quickly grab a php vagrant machine [here](http://puphpet.com).
+- `PHP 5x` installed on your machine. You can quickly grab a php vagrant machine [here](http://puphpet.com).
+- Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 
 ### Install
-`git clone` this repository locally and run `php scripts/tictactoe.php`. The program will start, good luck with beating the Ai ;)
+- `git clone` this repository locally  
+- Run `composer install`
+- run `php scripts/tictactoe.php`. The program will start, good luck with beating the Ai ;)
 
 ## Notes
 The AI will never lose. At best you can `Draw`. The Ai will apply the strategy mentioned on [Wikipedia](http://en.wikipedia.org/wiki/Tic-tac-toe#Strategy).
