@@ -9,6 +9,7 @@ use TicTacToe\Rules\CenterRule;
 use TicTacToe\Rules\OpponentCornerRule;
 use TicTacToe\Rules\BlockOpponentForkRule;
 use TicTacToe\Rules\ChoseSideRule;
+use TicTacToe\Rules\ChoseCornerRule;
 
 class Ai extends Player
 {
@@ -25,6 +26,7 @@ class Ai extends Player
         $centerRule = new CenterRule($this);
         $opponentCornerRule = new OpponentCornerRule($this);
         $blockOpponentForkRule = new BlockOpponentForkRule($this);
+        $choseCornerRule = new ChoseCornerRule($this);
         $choseSideRule = new ChoseSideRule($this);
         $currentBoard = $this->board;
 
@@ -39,6 +41,8 @@ class Ai extends Player
         } else if ($move = $centerRule->apply($currentBoard)) {
             return $move;
         } else if ($move = $opponentCornerRule->apply($currentBoard)) {
+            return $move;
+        } else if ($move = $choseCornerRule->apply($currentBoard)) {
             return $move;
         } else if ($move = $choseSideRule->apply($currentBoard)) {
             return $move;

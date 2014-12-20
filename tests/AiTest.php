@@ -134,6 +134,21 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
 
+    public function testAiWillChoseCornerOverSide()
+    {
+        $board = new Board();
+        $board->set([1, 1], 'X');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [0, 0];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
+
     public function testEmptySide()
     {
         $board = new Board();
