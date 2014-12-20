@@ -6,13 +6,17 @@ use \TicTacToe\Player;
 
 class TicTacToeTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->player = new Player('John');
+        $this->tictactoe = TicTacToe::againstAi($this->player);
+
+    }
+
     public function testCanCreateGamePlayerVsAi()
     {
-        $player = new Player('John');
-        $tictactoe = TicTacToe::againstAi($player);
-
-        $this->assertInstanceOf('\TicTacToe\TicTacToe', $tictactoe);
-        $nPlayers = count($tictactoe->getPlayers());
+        $this->assertInstanceOf('\TicTacToe\TicTacToe', $this->tictactoe);
+        $nPlayers = count($this->tictactoe->getPlayers());
         $this->assertEquals(2, $nPlayers);
     }
 
