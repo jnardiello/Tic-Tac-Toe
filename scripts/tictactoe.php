@@ -4,7 +4,7 @@ namespace TicTacToe;
 
 require_once(__DIR__ . '/../bootstrap.php');
 
-echo "Hello stranger, what's your name?       ";
+echo "\n\nHello stranger, what's your name?       ";
 $handle = fopen ("php://stdin","r");
 $playerName = trim(fgets($handle));
 
