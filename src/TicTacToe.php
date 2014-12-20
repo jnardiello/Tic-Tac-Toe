@@ -16,11 +16,6 @@ class TicTacToe
         $this->players['O'] = $secondPlayer;
     }
 
-    public function getPlayers()
-    {
-        return $this->players;
-    }
-
     public static function againstAi(\TicTacToe\Player $player)
     {
         $board = new Board();
@@ -35,13 +30,23 @@ class TicTacToe
         return new TicTacToe($player, $ai, $board);
     }
 
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
     public function moveAgainstAi($humanCoords)
     {
         $player = $this->getPlayer();
-        $player->move($humanCoords);
+
+        if (!$player->move($humanCoords)) {
+            return false;
+        }
 
         $ai = $this->getAi();
         $ai->move($ai->deduct());
+
+        return true;
     }
 
     public function getBoard()

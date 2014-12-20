@@ -18,7 +18,11 @@ do {
     $handle = fopen ("php://stdin","r");
     $move = trim(fgets($handle));
 
-    $tictactoe->moveAgainstAi($move);
+    if (!$tictactoe->moveAgainstAi($move)) {
+        echo "Invalid move my friend! press enter and try again";
+        fgets($handle);
+        continue;
+    }
 } while (!$tictactoe->checkForWinner());
 
 $winner = $tictactoe->checkForWinner();
