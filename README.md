@@ -6,7 +6,7 @@
 
 ### Install
 - `git clone` this repository locally  
-- Run `composer install`
+- run `composer install`
 - run `php scripts/tictactoe.php`. The program will start, good luck with beating the Ai ;)
 
 ## Notes
