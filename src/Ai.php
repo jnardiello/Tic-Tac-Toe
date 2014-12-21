@@ -20,32 +20,23 @@ class Ai extends Player
 
     public function deduct()
     {
-        $winRule = new WinRule($this);
-        $blockRule = new BlockRule($this);
-        $forkRule = new ForkRule($this);
-        $centerRule = new CenterRule($this);
-        $opponentCornerRule = new OpponentCornerRule($this);
-        $blockOpponentForkRule = new BlockOpponentForkRule($this);
-        $choseCornerRule = new ChoseCornerRule($this);
-        $choseSideRule = new ChoseSideRule($this);
+        $prioritizedRules = [
+            new WinRule($this),
+            new BlockRule($this),
+            new ForkRule($this),
+            new BlockOpponentForkRule($this),
+            new CenterRule($this),
+            new OpponentCornerRule($this),
+            new ChoseCornerRule($this),
+            new ChoseSideRule($this),
+        ];
+
         $currentBoard = $this->board;
 
-        if ($move = $winRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $blockRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $forkRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $blockOpponentForkRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $centerRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $opponentCornerRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $choseCornerRule->apply($currentBoard)) {
-            return $move;
-        } else if ($move = $choseSideRule->apply($currentBoard)) {
-            return $move;
+        foreach ($prioritizedRules as $rule) {
+            if ($move = $rule->apply($currentBoard)) {
+                return $move;
+            }
         }
 
         return false;
