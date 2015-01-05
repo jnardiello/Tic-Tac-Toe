@@ -45,7 +45,7 @@ class TicTacToe
             return false;
         }
 
-        if (count($this->board->getAvailableSpots()) > 0) {
+        if (count($this->board->getAvailableSpots()) > 0 && !$this->checkForWinner()) {
             $ai = $this->getAi();
             $ai->move($ai->deduct());
         }
