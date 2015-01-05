@@ -66,6 +66,20 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAiWontMoveIfPlayerWins()
+    {
+        $board = $this->tictactoe->getBoard();
+        $board->set([2, 2], 'X');
+        $board->set([1, 1], 'O');
+        $board->set([0, 0], 'X');
+        $board->set([0, 2], 'O');
+        $board->set([1, 0], 'O');
+        $board->set([2, 0], 'X');
+        
+        $this->tictactoe->moveAgainstAi('C2');
+        $this->assertEquals('John', $this->tictactoe->checkForWinner());
+    }
+
     public function testNobodyWonYet()
     {
         $this->assertFalse($this->tictactoe->checkForWinner());
