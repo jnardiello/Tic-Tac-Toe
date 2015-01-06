@@ -104,6 +104,23 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
 
+    public function testAiWontBlockForkIfAnotherOpponentForkIsAvailableAndInsteadWillForceDefense()
+    {
+        $board = new Board();
+        $board->set([0, 0], 'O');
+        $board->set([2, 2], 'O');
+        $board->set([1, 1], 'X');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('X')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [0, 1];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
+
     public function testAiCanMoveToTheCenter()
     {
         $board = new Board();
