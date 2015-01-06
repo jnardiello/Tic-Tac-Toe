@@ -23,10 +23,12 @@ class BlockOpponentForkRule extends ForkBaseRule implements Rule
                 $board, 
                 $this->getOpponentPlaceholder($board));
 
+            // We have a possible fork and we can stop it
             if (count($opponentOpportunities) == 2 && $this->noMoreOpponentForks($cell, $board)) {
                 return $cell->getCoords();
             }
 
+            // Sometimes we can't stop a fork, so we push the opponent to defend
             if (count($opponentOpportunities) == 2 && !$this->noMoreOpponentForks($cell, $board)) {
                 return $this->forceOpponentDefense($board);
             }
@@ -40,20 +42,14 @@ class BlockOpponentForkRule extends ForkBaseRule implements Rule
         $availableSpots = $board->getAvailableSpots();
 
         foreach ($availableSpots as $cell) {
-            $currentRow = $board->row($cell->getCoords());
-            $currentColumn = $board->column($cell->getCoords());
-            $currentDiagonal = $board->diagonal($cell->getCoords());
+            $current['row'] = $board->row($cell->getCoords());
+            $current['column'] = $board->column($cell->getCoords());
+            $current['diagonal'] = $board->diagonal($cell->getCoords());
 
-            if ($this->countEmptySpots($currentRow) == 2) {
-                return $cell->getCoords();
-            }
-
-            if ($this->countEmptySpots($currentColumn) == 2) {
-                return $cell->getCoords();
-            }
-
-            if ($this->countEmptySpots($currentDiagonal) == 2) {
-                return $cell->getCoords();
+            foreach ($current as $groupOfCells) {
+                if ($this->countEmptySpots($groupOfCells) == 2) {
+                    return $cell->getCoords();
+                }
             }
         }
     }
