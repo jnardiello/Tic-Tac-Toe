@@ -25,11 +25,13 @@ class BlockOpponentForkRule extends ForkBaseRule implements Rule
 
             // We have a possible fork and we can stop it
             if (count($opponentOpportunities) == 2 && $this->noMoreOpponentForks($cell, $board)) {
+                var_dump('case 1');
                 return $cell->getCoords();
             }
 
             // Sometimes we can't stop a fork, so we push the opponent to defend
             if (count($opponentOpportunities) == 2 && !$this->noMoreOpponentForks($cell, $board)) {
+                var_dump('case 2');
                 return $this->forceOpponentDefense($board);
             }
         }

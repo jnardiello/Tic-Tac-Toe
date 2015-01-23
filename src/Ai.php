@@ -10,6 +10,7 @@ use TicTacToe\Rules\OpponentCornerRule;
 use TicTacToe\Rules\BlockOpponentForkRule;
 use TicTacToe\Rules\ChoseSideRule;
 use TicTacToe\Rules\ChoseCornerRule;
+use TicTacToe\Rules\TwoConsecutiveRule;
 
 class Ai extends Player
 {
@@ -24,7 +25,8 @@ class Ai extends Player
             new WinRule($this),
             new BlockRule($this),
             new ForkRule($this),
-            new BlockOpponentForkRule($this),
+            new TwoConsecutiveRule($this),
+            /* new BlockOpponentForkRule($this), */
             new CenterRule($this),
             new OpponentCornerRule($this),
             new ChoseCornerRule($this),
