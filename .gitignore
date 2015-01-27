@@ -6,3 +6,4 @@ composer.lock
 *.swn
 gulpfile.js
 node_modules
+.idea
