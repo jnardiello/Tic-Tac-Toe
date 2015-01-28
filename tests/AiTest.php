@@ -87,23 +87,6 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($nextMoveCoords, $expectedCoordsRange));
     }
 
-    public function testAiCanBlockOpponentForkAfterRunningBoardSimulation()
-    {
-        $board = new Board();
-        $board->set([0, 2], 'O');
-        $board->set([1, 0], 'O');
-        $board->set([1, 1], 'X');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [0, 0];
-
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
-    }
-
     public function testAiWontBlockForkIfAnotherOpponentForkIsAvailableAndInsteadWillForceDefense()
     {
         $board = new Board();
@@ -117,23 +100,6 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $nextMoveCoords = $ai->deduct();
         $expectedCoords = [0, 1];
-
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
-    }
-
-    public function testAiWontMoveIfCreatesForkOpportunityForOpponent()
-    {
-        $board = new Board();
-        $board->set([0, 0], 'X');
-        $board->set([2, 2], 'O');
-        $board->set([1, 1], 'O');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [0, 2];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
@@ -201,6 +167,23 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
         $nextMoveCoords = $ai->deduct();
         $expectedCoords = [1, 0];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
+
+    public function testAiWillForceDefenseWithoutCreatingOpponentFork()
+    {
+        $board = new Board();
+        $board->set([0, 2], 'X');
+        $board->set([2, 0], 'X');
+        $board->set([1, 1], 'O');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('O')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [0, 2];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
