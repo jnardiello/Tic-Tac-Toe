@@ -28,12 +28,39 @@ class TwoConsecutiveRule extends ForkBaseRule implements Rule
 
     private function detectOpponentFork($spot, $board)
     {
-        $coords = $this->simulate($spot, $board, $this->getOpponentPlaceholder($board));
-        if (is_array($coords)) {
+        $complementatyFreeSpot = $this->getFreeSpot($spot, $board);
+        $simulatedBoard = new SimulatedBoard($board);
+        $simulatedBoard->set($spot->getCoords(), $this->getOpponentPlaceholder($board));
+
+        $opponentWinningMoves = $this->simulate($complementatyFreeSpot, $simulatedBoard, $this->getOpponentPlaceholder($board));
+        if (is_array($opponentWinningMoves)) {
             return true;
         }
 
         return false;
+    }
+
+    private function getFreeSpot($spot, $board)
+    {
+        $coords['row'] = $board->row($spot->getCoords());
+        $coords['column'] = $board->column($spot->getCoords());
+        $coords['diagonal'] = $board->diagonal($spot->getCoords());
+
+        foreach ($coords as $coord) {
+            $result = $this->getFreeSpotFromCollection($coord);
+            if ($result) {
+                return $result;
+            }
+        }
+    }
+
+    private function getFreeSpotFromCollection($cells)
+    {
+        foreach ($cells as $cell) {
+           if ($cell->getValue() == '')  {
+               return $cell;
+           }
+        }
     }
 
     private function getOpponentPlaceholder($board)
@@ -43,6 +70,8 @@ class TwoConsecutiveRule extends ForkBaseRule implements Rule
                 return $cell->getValue();
             }
         }
+
+        return false;
     }
 
     private function getCandidateSpots($board)
