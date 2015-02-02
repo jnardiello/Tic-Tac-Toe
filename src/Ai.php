@@ -25,7 +25,7 @@ class Ai extends Player
             new WinRule($this),
             new BlockRule($this),
             new ForkRule($this),
-            new TwoConsecutiveRule($this),
+//            new TwoConsecutiveRule($this),
             /* new BlockOpponentForkRule($this), */
             new CenterRule($this),
             new OpponentCornerRule($this),

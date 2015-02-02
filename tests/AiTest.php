@@ -87,23 +87,6 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($nextMoveCoords, $expectedCoordsRange));
     }
 
-    public function testAiWontBlockForkIfAnotherOpponentForkIsAvailableAndInsteadWillForceDefense()
-    {
-        $board = new Board();
-        $board->set([0, 0], 'O');
-        $board->set([2, 2], 'O');
-        $board->set([1, 1], 'X');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [0, 1];
-
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
-    }
-
     public function testAiCanMoveToTheCenter()
     {
         $board = new Board();
@@ -121,11 +104,14 @@ class AiTest extends \PHPUnit_Framework_TestCase
     public function testOpponentIsInOppositeCorner()
     {
         $board = new Board();
-        $board->set([0, 0], 'O');
-        $board->set([1, 1], 'X');
+        $board->set([0, 0], 'X');
+        $board->set([0, 2], 'X');
+        $board->set([2, 1], 'X');
+        $board->set([0, 1], 'O');
+        $board->set([1, 1], 'O');
 
         $ai = new Ai();
-        $ai->setPlaceholder('X')
+        $ai->setPlaceholder('O')
             ->setBoard($board);
 
         $nextMoveCoords = $ai->deduct();
@@ -183,7 +169,24 @@ class AiTest extends \PHPUnit_Framework_TestCase
             ->setBoard($board);
 
         $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [0, 2];
+        $expectedCoords = [0, 1];
+
+        $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
+
+    public function testAiWillBlockOpponentFork()
+    {
+        $board = new Board();
+        $board->set([0, 0], 'X');
+        $board->set([2, 1], 'X');
+        $board->set([1, 1], 'O');
+
+        $ai = new Ai();
+        $ai->setPlaceholder('O')
+            ->setBoard($board);
+
+        $nextMoveCoords = $ai->deduct();
+        $expectedCoords = [2, 0];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }

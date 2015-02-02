@@ -23,9 +23,4 @@ class ForkBaseRule
 
         return false;
     }
-
-    protected function detectFork($board)
-    {
-
-    }
 }

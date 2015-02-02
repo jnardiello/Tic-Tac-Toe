@@ -17,7 +17,32 @@ class TwoConsecutiveRule extends ForkBaseRule implements Rule
     {
         $candidateSpots = $this->getCandidateSpots($board);
 
+        foreach ($candidateSpots as $spot) {
+            if (!$this->detectOpponentFork($spot, $board)) {
+                return $spot->getCoords();
+            }
+        }
+
         return false;
+    }
+
+    private function detectOpponentFork($spot, $board)
+    {
+        $coords = $this->simulate($spot, $board, $this->getOpponentPlaceholder($board));
+        if (is_array($coords)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getOpponentPlaceholder($board)
+    {
+        foreach ($board->board as $cell) {
+            if ($cell->getValue() != $this->player->getPlaceholder() && $cell->getValue() != '') {
+                return $cell->getValue();
+            }
+        }
     }
 
     private function getCandidateSpots($board)
