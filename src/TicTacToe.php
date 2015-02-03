@@ -86,11 +86,6 @@ class TicTacToe
 
     public function checkForWinner()
     {
-        $player = $this->getPlayer();
-        $ai = $this->getAi();
-        $playerPlaceholder = $player->getPlaceholder();
-        $aiPlaceholder = $ai->getPlaceholder();
-
         $diagonals = $this->board->diagonals();
         if ($key = $this->checkOccurrencesOfThree($diagonals)) {
              return $this->players[$key]->getName();
