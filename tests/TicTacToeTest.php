@@ -4,6 +4,7 @@ namespace TicTacToe;
 
 class TicTacToeTest extends \PHPUnit_Framework_TestCase
 {
+    /*
     public function setUp()
     {
         $this->player = new Player('John');
@@ -88,5 +89,29 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $nonExistingCoords = 'D400';
 
         $this->assertFalse($this->tictactoe->moveAgainstAi($nonExistingCoords));
+    }
+    */
+
+    public function testCanAddASinglePlayerToTictactoe()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addPlayer('Jhon', 'X');
+//            ->addAi()
+//            ->play();
+
+        $this->assertEquals(1, count($ticTacToe->getPlayers()));
+    }
+
+    public function testCanAddTwoPlayersToTictactoe()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addPlayer('Jhon', 'X')
+            ->addPlayer('Jack', 'O');
+
+        $this->assertEquals(2, count($ticTacToe->getPlayers()));
     }
 }

@@ -7,11 +7,26 @@ class TicTacToe
     private $board;
     private $players = [];
 
-    private function __construct($firstPlayer, $secondPlayer, $board)
+    public function __construct()
     {
-        $this->board = $board;
-        $this->players['X'] = $firstPlayer;
-        $this->players['O'] = $secondPlayer;
+        $this->board = new Board();
+    }
+
+    /**
+     * @param string $name
+     * @param string $placeholder
+     * @return TicTacToe this game
+     */
+    public function addPlayer($name, $placeholder)
+    {
+        $player = new Player($name);
+        $player
+            ->setBoard($this->board)
+            ->setPlaceholder($placeholder);
+
+        $this->players[] = $player;
+
+        return $this;
     }
 
     public static function againstAi(\TicTacToe\Player $player)
