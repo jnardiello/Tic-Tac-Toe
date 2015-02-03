@@ -83,12 +83,6 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->tictactoe->checkForWinner());
     }
 
-    public function testNobodyYetWon()
-    {
-        $board = $this->tictactoe->getBoard();
-        $this->assertFalse($this->tictactoe->checkForWinner());
-    }
-
     public function testCantMoveToNonExistingPosition()
     {
         $nonExistingCoords = 'D400';
