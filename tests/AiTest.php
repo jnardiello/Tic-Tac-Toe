@@ -101,27 +101,6 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }
 
-    public function testOpponentIsInOppositeCorner()
-    {
-        // I'm not really sure how to test this. I'll leave it untested for now as this rule shouldn't affect the others
-        $this->markTestSkipped();
-        $board = new Board();
-        $board->set([0, 0], 'X');
-        $board->set([0, 2], 'X');
-        $board->set([2, 1], 'X');
-        $board->set([0, 1], 'O');
-        $board->set([1, 1], 'O');
-
-        $ai = new Ai();
-        $ai->setPlaceholder('O')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [2, 2];
-
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
-    }
-
     public function testAiWillChoseCornerOverSide()
     {
         $board = new Board();
@@ -188,7 +167,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
             ->setBoard($board);
 
         $nextMoveCoords = $ai->deduct();
-        $expectedCoords = [2, 0];
+        $expectedCoords = [1, 0];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
     }

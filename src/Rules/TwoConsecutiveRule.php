@@ -28,11 +28,12 @@ class TwoConsecutiveRule extends ForkBaseRule implements Rule
 
     private function detectOpponentFork($spot, $board)
     {
-        $complementatyFreeSpot = $this->getFreeSpot($spot, $board);
         $simulatedBoard = new SimulatedBoard($board);
-        $simulatedBoard->set($spot->getCoords(), $this->getOpponentPlaceholder($board));
+        $simulatedBoard->set($spot->getCoords(), $this->player->getPlaceholder());
 
+        $complementatyFreeSpot = $this->getFreeSpot($simulatedBoard);
         $opponentWinningMoves = $this->simulate($complementatyFreeSpot, $simulatedBoard, $this->getOpponentPlaceholder($board));
+
         if (is_array($opponentWinningMoves)) {
             return true;
         }
@@ -40,26 +41,43 @@ class TwoConsecutiveRule extends ForkBaseRule implements Rule
         return false;
     }
 
-    private function getFreeSpot($spot, $board)
+    private function getFreeSpot($board)
     {
-        $coords['row'] = $board->row($spot->getCoords());
-        $coords['column'] = $board->column($spot->getCoords());
-        $coords['diagonal'] = $board->diagonal($spot->getCoords());
+        $availableSpots = $board->getAvailableSpots();
+        foreach ($availableSpots as $spot) {
+            $coords['row'] = $board->row($spot->getCoords());
+            $coords['column'] = $board->column($spot->getCoords());
+            $coords['diagonal'] = $board->diagonal($spot->getCoords());
 
-        foreach ($coords as $coord) {
-            $result = $this->getFreeSpotFromCollection($coord);
-            if ($result) {
-                return $result;
+            foreach ($coords as $coord) {
+                if (isset($coord)) {
+                    $result = $this->getWinningSpot($coord);
+                    if ($result) {
+                        return $result;
+                    }
+                }
             }
         }
     }
 
-    private function getFreeSpotFromCollection($cells)
+    private function getWinningSpot($cells)
     {
+        $playerSpots = 0;
+        $emptySpot = 0;
+
         foreach ($cells as $cell) {
-           if ($cell->getValue() == '')  {
-               return $cell;
-           }
+            if ($cell->getValue() == '') {
+                $emptySpot++;
+                $result = $cell;
+            }
+
+            if ($cell->getValue() == $this->player->getPlaceholder()) {
+                $playerSpots++;
+            }
+        }
+
+        if ($playerSpots == 2 && $emptySpot == 1) {
+            return $result;
         }
     }
 
