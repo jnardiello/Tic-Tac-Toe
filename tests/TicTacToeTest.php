@@ -2,8 +2,6 @@
 
 namespace TicTacToe;
 
-use \TicTacToe\Player;
-
 class TicTacToeTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()

@@ -2,8 +2,6 @@
 
 namespace TicTacToe;
 
-use TicTacToe\Board;
-
 class TicTacToe
 {
     private $board;
