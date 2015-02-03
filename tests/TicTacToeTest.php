@@ -19,7 +19,7 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $nPlayers);
     }
 
-    public function testBothPlayersWillMoveDurignTurn()
+    public function testBothPlayersWillMoveDuringTurn()
     {
         $humanCoords = 'A1';
         $this->tictactoe->moveAgainstAi($humanCoords);
