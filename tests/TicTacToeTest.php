@@ -98,8 +98,6 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
 
         $ticTacToe
             ->addHuman('Jhon', 'X');
-//            ->addAi()
-//            ->play();
 
         $this->assertEquals(1, count($ticTacToe->getPlayers()));
     }
@@ -115,14 +113,16 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($ticTacToe->getPlayers()));
     }
 
+    /**
+     * @expectedException Exception
+     * @expectedExceptionMessage Duplicate placeholder
+     */
     public function testWontAddNewPlayerWithDuplicatePlaceholder()
     {
         $ticTacToe = new TicTacToe();
         $ticTacToe
             ->addHuman('Jhon', 'X')
             ->addHuman('Jack', 'X');
-
-        $this->expectOutputString("Can't add two players with the same placeholder");
     }
 
     public function testCanCreateGameWithPlayerAndAi()
@@ -147,6 +147,10 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($ticTacToe->getPlayers()));
     }
 
+    /**
+     * @expectedException Exception
+     * @expectedExceptionMessage Duplicate placeholder
+     */
     public function testCantAddTwoAiWithSamePlaceholder()
     {
         $ticTacToe = new TicTacToe();
@@ -154,10 +158,12 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $ticTacToe
             ->addAi('Al', 'O')
             ->addAi('Al', 'O');
-
-        $this->expectOutputString("Can't add two players with the same placeholder");
     }
 
+    /**
+     * @expectedException Exception
+     * @expectedExceptionMessage Too many players.
+     */
     public function testCantAddMoreThanTwoPlayers()
     {
         $ticTacToe = new TicTacToe();
@@ -166,7 +172,17 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
             ->addHuman('Jhon', 'X')
             ->addHuman('Jack', 'M')
             ->addAi('Al', 'O');
+    }
 
-        $this->expectOutputString("Too many players.");
+    /**
+     * @expectedException Exception
+     * @expectedExceptionMessage Not enough players.
+     */
+    public function testCantPlayGameWithLessThanTwoPlayers()
+    {
+        $ticTacToe = new TicTacToe();
+        $ticTacToe
+            ->addHuman('Jhon', 'X')
+            ->play();
     }
 }

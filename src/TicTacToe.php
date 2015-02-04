@@ -5,7 +5,7 @@ namespace TicTacToe;
 class TicTacToe
 {
     const LOCAL_NAMESPACE = 'TicTacToe\\';
-    const MAX_NUM_PLAYERS = 2;
+    const NUM_PLAYERS = 2;
 
     private $board;
     private $players = [];
@@ -39,9 +39,16 @@ class TicTacToe
         return $this;
     }
 
+    /**
+     * @param string $type
+     * @param string $name
+     * @param string $placeholder
+     *
+     * Add a player to the players array
+     */
     private function addPlayer($type, $name, $placeholder)
     {
-        if (count($this->players) < self::MAX_NUM_PLAYERS) {
+        if (count($this->players) < self::NUM_PLAYERS) {
             if (!isset($this->players[$placeholder])) {
                 $class = self::LOCAL_NAMESPACE . $type;
                 $player = new $class($name);
@@ -51,12 +58,28 @@ class TicTacToe
 
                 $this->players[$placeholder] = $player;
             } else {
-                echo "Can't add two players with the same placeholder";
+                throw new \Exception('Duplicate placeholder');
             }
         } else {
-            echo "Too many players.";
+            throw new \Exception("Too many players.");
         }
     }
+
+    /**
+     * @return array Players
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
+    public function play()
+    {
+        if (count($this->players) < 2) {
+            throw new \Exception("Not enough players.");
+        }
+    }
+
 
     public static function againstAi(\TicTacToe\Player $player)
     {
@@ -70,11 +93,6 @@ class TicTacToe
            ->setBoard($board);
 
         return new TicTacToe($player, $ai, $board);
-    }
-
-    public function getPlayers()
-    {
-        return $this->players;
     }
 
     public function moveAgainstAi($humanCoords)

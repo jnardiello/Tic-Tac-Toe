@@ -41,11 +41,6 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
         $john->move('A1');
         $al->move('B1');
         $al->move('B2');
-        $expectedGrid = [
-            ['X', '', ''],
-            ['O', 'O', ''],
-            ['', '', ''],
-        ];
 
         $this->assertFalse($john->move('B1'));
     }
