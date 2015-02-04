@@ -4,9 +4,11 @@ namespace TicTacToe;
 
 class TicTacToe
 {
+    const LOCAL_NAMESPACE = 'TicTacToe\\';
+    const MAX_NUM_PLAYERS = 2;
+
     private $board;
     private $players = [];
-    private $ais = [];
 
     public function __construct()
     {
@@ -18,33 +20,42 @@ class TicTacToe
      * @param string $placeholder
      * @return TicTacToe this game
      */
-    public function addPlayer($name, $placeholder)
+    public function addHuman($name, $placeholder)
     {
-        if (!isset($this->players[$placeholder])) {
-            $player = new Player($name);
-            $player
-                ->setBoard($this->board)
-                ->setPlaceholder($placeholder);
-
-            $this->players[$placeholder] = $player;
-        } else {
-            echo "Can't add two players with the same placeholder";
-        }
+        $this->addPlayer('Player', $name, $placeholder);
 
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param string $placeholder
+     * @return $this
+     */
     public function addAi($name, $placeholder)
     {
-        $ai = new Ai();
-        $ai
-            ->setBoard($this->board)
-            ->setPlaceholder($placeholder);
-
-        $this->ais[] = $ai;
+        $this->addPlayer('Ai', $name, $placeholder);
 
         return $this;
+    }
 
+    private function addPlayer($type, $name, $placeholder)
+    {
+        if (count($this->players) < self::MAX_NUM_PLAYERS) {
+            if (!isset($this->players[$placeholder])) {
+                $class = self::LOCAL_NAMESPACE . $type;
+                $player = new $class($name);
+                $player
+                    ->setBoard($this->board)
+                    ->setPlaceholder($placeholder);
+
+                $this->players[$placeholder] = $player;
+            } else {
+                echo "Can't add two players with the same placeholder";
+            }
+        } else {
+            echo "Too many players.";
+        }
     }
 
     public static function againstAi(\TicTacToe\Player $player)
@@ -92,11 +103,6 @@ class TicTacToe
     public function getPlayer()
     {
         return $this->players['X'];
-    }
-
-    public function getAi()
-    {
-        return $this->ais;
     }
 
     private function checkOccurrencesOfThree($diagonals)

@@ -97,7 +97,7 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $ticTacToe = new TicTacToe();
 
         $ticTacToe
-            ->addPlayer('Jhon', 'X');
+            ->addHuman('Jhon', 'X');
 //            ->addAi()
 //            ->play();
 
@@ -109,8 +109,8 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $ticTacToe = new TicTacToe();
 
         $ticTacToe
-            ->addPlayer('Jhon', 'X')
-            ->addPlayer('Jack', 'O');
+            ->addHuman('Jhon', 'X')
+            ->addHuman('Jack', 'O');
 
         $this->assertEquals(2, count($ticTacToe->getPlayers()));
     }
@@ -119,8 +119,8 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
     {
         $ticTacToe = new TicTacToe();
         $ticTacToe
-            ->addPlayer('Jhon', 'X')
-            ->addPlayer('Jack', 'X');
+            ->addHuman('Jhon', 'X')
+            ->addHuman('Jack', 'X');
 
         $this->expectOutputString("Can't add two players with the same placeholder");
     }
@@ -130,11 +130,10 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
         $ticTacToe = new TicTacToe();
 
         $ticTacToe
-            ->addPlayer('Jhon', 'X')
+            ->addHuman('Jhon', 'X')
             ->addAi('Al', 'O');
 
-        $this->assertEquals(1, count($ticTacToe->getPlayers()));
-        $this->assertEquals(1, count($ticTacToe->getAi()));
+        $this->assertEquals(2, count($ticTacToe->getPlayers()));
     }
 
     public function testCanAddTwoAisToGame()
@@ -145,6 +144,29 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
             ->addAi('Al', 'O')
             ->addAi('Al', 'X');
 
-        $this->assertEquals(2, count($ticTacToe->getAi()));
+        $this->assertEquals(2, count($ticTacToe->getPlayers()));
+    }
+
+    public function testCantAddTwoAiWithSamePlaceholder()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addAi('Al', 'O')
+            ->addAi('Al', 'O');
+
+        $this->expectOutputString("Can't add two players with the same placeholder");
+    }
+
+    public function testCantAddMoreThanTwoPlayers()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addHuman('Jhon', 'X')
+            ->addHuman('Jack', 'M')
+            ->addAi('Al', 'O');
+
+        $this->expectOutputString("Too many players.");
     }
 }
