@@ -19,12 +19,16 @@ class TicTacToe
      */
     public function addPlayer($name, $placeholder)
     {
-        $player = new Player($name);
-        $player
-            ->setBoard($this->board)
-            ->setPlaceholder($placeholder);
+        if (!isset($this->players[$placeholder])) {
+            $player = new Player($name);
+            $player
+                ->setBoard($this->board)
+                ->setPlaceholder($placeholder);
 
-        $this->players[] = $player;
+            $this->players[$placeholder] = $player;
+        } else {
+            echo "Can't add two players with the same placeholder";
+        }
 
         return $this;
     }
