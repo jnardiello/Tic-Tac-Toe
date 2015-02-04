@@ -81,6 +81,7 @@ class TicTacToe
         }
 
         do {
+            echo "\n\n" . $this->board->toString();
             foreach ($this->players as $player) {
                 $player->move();
             }

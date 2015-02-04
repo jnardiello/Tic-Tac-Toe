@@ -12,11 +12,16 @@ use TicTacToe\Rules\ChoseSideRule;
 use TicTacToe\Rules\ChoseCornerRule;
 use TicTacToe\Rules\TwoConsecutiveRule;
 
-class Ai extends Player
+class Ai extends PlayerBase
 {
     public function __construct()
     {
         parent::__construct('Al');
+    }
+
+    public function move()
+    {
+        $this->setOnBoard($this->deduct());
     }
 
     public function deduct()

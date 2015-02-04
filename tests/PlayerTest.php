@@ -15,9 +15,9 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
         $al->setPlaceholder('O')
             ->setBoard($board);
 
-        $john->move('A1');
-        $al->move('B1');
-        $al->move('B2');
+        $john->setOnBoard('A1');
+        $al->setOnBoard('B1');
+        $al->setOnBoard('B2');
         $expectedGrid = [
             ['X', '', ''],
             ['O', 'O', ''],
@@ -38,10 +38,10 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
         $al->setPlaceholder('O')
             ->setBoard($board);
 
-        $john->move('A1');
-        $al->move('B1');
-        $al->move('B2');
+        $john->setOnBoard('A1');
+        $al->setOnBoard('B1');
+        $al->setOnBoard('B2');
 
-        $this->assertFalse($john->move('B1'));
+        $this->assertFalse($john->setOnBoard('B1'));
     }
 }
