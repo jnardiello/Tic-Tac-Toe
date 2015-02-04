@@ -185,4 +185,6 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
             ->addHuman('Jhon', 'X')
             ->play();
     }
+
+    // Not sure how I can test the play() method
 }
