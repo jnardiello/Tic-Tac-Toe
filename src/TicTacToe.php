@@ -6,6 +6,7 @@ class TicTacToe
 {
     private $board;
     private $players = [];
+    private $ais = [];
 
     public function __construct()
     {
@@ -31,6 +32,19 @@ class TicTacToe
         }
 
         return $this;
+    }
+
+    public function addAi($name, $placeholder)
+    {
+        $ai = new Ai();
+        $ai
+            ->setBoard($this->board)
+            ->setPlaceholder($placeholder);
+
+        $this->ais[] = $ai;
+
+        return $this;
+
     }
 
     public static function againstAi(\TicTacToe\Player $player)
@@ -82,7 +96,7 @@ class TicTacToe
 
     public function getAi()
     {
-        return $this->players['O'];
+        return $this->ais;
     }
 
     private function checkOccurrencesOfThree($diagonals)

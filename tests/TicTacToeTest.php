@@ -124,4 +124,27 @@ class TicTacToeTest extends \PHPUnit_Framework_TestCase
 
         $this->expectOutputString("Can't add two players with the same placeholder");
     }
+
+    public function testCanCreateGameWithPlayerAndAi()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addPlayer('Jhon', 'X')
+            ->addAi('Al', 'O');
+
+        $this->assertEquals(1, count($ticTacToe->getPlayers()));
+        $this->assertEquals(1, count($ticTacToe->getAi()));
+    }
+
+    public function testCanAddTwoAisToGame()
+    {
+        $ticTacToe = new TicTacToe();
+
+        $ticTacToe
+            ->addAi('Al', 'O')
+            ->addAi('Al', 'X');
+
+        $this->assertEquals(2, count($ticTacToe->getAi()));
+    }
 }
