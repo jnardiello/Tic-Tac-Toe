@@ -6,8 +6,8 @@ require_once(__DIR__ . '/../bootstrap.php');
 
 $tictactoe = new TicTacToe();
 $winner = $tictactoe
-    ->addHuman('Jacopo', 'X')
     ->addAi('Al', 'O')
+    ->addHuman('Jacopo', 'X')
     ->play();
 
-echo "The winner is: " . $winner;
+echo $winner;

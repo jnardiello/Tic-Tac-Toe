@@ -14,11 +14,11 @@ class Arbiter
         $this->players = $ticTacToe->getPlayers();
     }
 
-    private function checkOccurrencesOfThree($diagonals)
+    private function checkOccurrencesOfThree($collections)
     {
-        foreach ($diagonals as $diagonal) {
+        foreach ($collections as $collection) {
             $diagonalArray = [];
-            foreach ($diagonal as $cell) {
+            foreach ($collection as $cell) {
                 $diagonalArray[] = $cell->getValue();
             }
 
@@ -32,25 +32,45 @@ class Arbiter
 
     }
 
+    private function getPlayerNameFromKey($key)
+    {
+       foreach ($this->players as $player) {
+          if ($player->getPlaceholder() == $key) {
+              return $player->getName();
+          }
+       }
+    }
+
     public function checkForWinner()
     {
         $diagonals = $this->board->diagonals();
         if ($key = $this->checkOccurrencesOfThree($diagonals)) {
-            return $this->players[$key]->getName();
+            return [
+               'status' => 'winner',
+               'winner' => $this->getPlayerNameFromKey($key),
+            ];
         }
 
         $rows = $this->board->rows();
         if ($key = $this->checkOccurrencesOfThree($rows)) {
-            return $this->players[$key]->getName();
+            return [
+                'status' => 'winner',
+                'winner' => $this->getPlayerNameFromKey($key),
+            ];
         }
 
         $columns = $this->board->columns();
         if ($key = $this->checkOccurrencesOfThree($columns)) {
-            return $this->players[$key]->getName();
+            return [
+                'status' => 'winner',
+                'winner' => $this->getPlayerNameFromKey($key),
+            ];
         }
 
         if (count($this->board->getAvailableSpots()) == 0) {
-            return 'Draw';
+            return [
+                'status' => 'draw',
+            ];
         }
 
         return false;

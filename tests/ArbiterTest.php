@@ -17,8 +17,12 @@ class ArbiterTest extends \PHPUnit_Framework_TestCase
         $board->set([2, 0], 'X');
 
         $arbiter = new Arbiter($ticTacToe);
+        $expectedWinner = [
+            'status' => 'winner',
+            'winner' => 'John',
+        ];
 
-        $this->assertEquals('John', $arbiter->checkForWinner());
+        $this->assertEquals($expectedWinner, $arbiter->checkForWinner());
     }
 
     public function testArbiterWillReturnFalseWhenNoWinnerIsFound()

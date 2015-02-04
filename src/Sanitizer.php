@@ -19,6 +19,7 @@ class Sanitizer
             ||
             !in_array($number, $this->getValidNumbers())
         ) {
+            echo "\nInvalid move my friend, try again\n";
             return false;
         }
 

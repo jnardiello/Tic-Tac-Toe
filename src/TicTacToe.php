@@ -49,20 +49,31 @@ class TicTacToe
     private function addPlayer($type, $name, $placeholder)
     {
         if (count($this->players) < self::NUM_PLAYERS) {
-            if (!isset($this->players[$placeholder])) {
+            if (!$this->placeholderIsAlreadyInUse($placeholder)) {
                 $class = self::LOCAL_NAMESPACE . $type;
                 $player = new $class($name);
                 $player
                     ->setBoard($this->board)
                     ->setPlaceholder($placeholder);
 
-                $this->players[$placeholder] = $player;
+                $this->players[] = $player;
             } else {
                 throw new \Exception('Duplicate placeholder');
             }
         } else {
             throw new \Exception("Too many players.");
         }
+    }
+
+    private function placeholderIsAlreadyInUse($placeholder)
+    {
+        foreach ($this->players as $player) {
+            if ($player->getPlaceholder() == $placeholder) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -81,14 +92,32 @@ class TicTacToe
         }
 
         do {
-            echo "\n\n" . $this->board->toString();
             foreach ($this->players as $player) {
                 $player->move();
+
+                // After each move we check if we have a winner
+                // If we have one, the game ends and we celebrate
+                if ($winner  = $arbiter->checkForWinner()) {
+                    break;
+                }
             }
 
-        } while (!$winner = $arbiter->checkForWinner());
+        } while (!$winner);
 
-        return $winner;
+        return $this->getWinnerMessage($winner);
+    }
+
+    private function getWinnerMessage($winner)
+    {
+        switch ($winner['status']) {
+            case 'winner':
+                return $this->board->toString() . "\n\n" . $winner['winner'] . " has won.\n\n";
+                break;
+            case 'draw':
+                return $this->board->toString() . "\n\nThe game ended with a draw\n\n";
+                break;
+        }
+
     }
 
     public static function againstAi(\TicTacToe\Player $player)
