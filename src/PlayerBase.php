@@ -4,8 +4,8 @@ namespace TicTacToe;
 
 abstract class PlayerBase
 {
-    private $name;
-    private $placeholder;
+    protected $name;
+    protected $placeholder;
 
     public function __construct($name)
     {

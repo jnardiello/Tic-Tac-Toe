@@ -85,7 +85,8 @@ class TicTacToe
             foreach ($this->players as $player) {
                 $player->move();
             }
-        } while ($winner = $arbiter->checkForWinner());
+
+        } while (!$winner = $arbiter->checkForWinner());
 
         return $winner;
     }
