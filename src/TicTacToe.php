@@ -120,38 +120,6 @@ class TicTacToe
 
     }
 
-    public static function againstAi(\TicTacToe\Player $player)
-    {
-        $board = new Board();
-
-        $player->setPlaceholder('X')
-            ->setBoard($board);
-
-        $ai = new Ai();
-        $ai->setPlaceholder('O')
-           ->setBoard($board);
-
-        return new TicTacToe($player, $ai, $board);
-    }
-
-    public function moveAgainstAi($humanCoords)
-    {
-        $sanitizer = new Sanitizer();
-        $healthyCoords = $sanitizer->check($humanCoords);
-        $player = $this->getPlayer();
-
-        if ( !$healthyCoords || !$player->move($healthyCoords)) {
-            return false;
-        }
-
-        if (count($this->board->getAvailableSpots()) > 0 && !$this->checkForWinner()) {
-            $ai = $this->getAi();
-            $ai->move($ai->deduct());
-        }
-
-        return true;
-    }
-
     public function getBoard()
     {
         return $this->board;
