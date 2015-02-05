@@ -130,7 +130,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $this->assertAiWillDeductMove($fixtures, $expectedCoords);
     }
 
-    private function assertLineOfTwo($fixtures, $expectedCoords, $placeholder)
+    private function assertLineOfTwo($fixtures, $expectedCoords)
     {
         foreach ($fixtures as $fixture) {
             $this->board->set($fixture, 'X');
