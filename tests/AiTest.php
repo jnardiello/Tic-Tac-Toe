@@ -73,10 +73,10 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testAiCanMoveToTheCenter()
     {
-        $nextMoveCoords = $this->ai->deduct();
+        $emptyBoard = [];
         $expectedCoords = [1, 1];
 
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
+        $this->assertAiWillDeductMove($emptyBoard, $expectedCoords);
     }
 
     public function testAiWillChoseCornerOverSide()
@@ -84,12 +84,9 @@ class AiTest extends \PHPUnit_Framework_TestCase
         $fixtures = [
             [[1, 1], 'X'],
         ];
-        $this->fillBoard($fixtures);
-
-        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [0, 0];
 
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
+        $this->assertAiWillDeductMove($fixtures, $expectedCoords);
     }
 
     public function testEmptySide()
@@ -104,12 +101,9 @@ class AiTest extends \PHPUnit_Framework_TestCase
             [[2, 1], 'O'],
             [[2, 2], 'X'],
         ];
-        $this->fillBoard($fixtures);
-
-        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [1, 0];
 
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
+        $this->assertAiWillDeductMove($fixtures, $expectedCoords);
     }
 
     public function testAiWillForceDefenseWithoutCreatingOpponentFork()
@@ -119,12 +113,9 @@ class AiTest extends \PHPUnit_Framework_TestCase
             [[2, 0], 'O'],
             [[1, 1], 'X'],
         ];
-        $this->fillBoard($fixtures);
-
-        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [0, 1];
 
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
+        $this->assertAiWillDeductMove($fixtures, $expectedCoords);
     }
 
     public function testAiWillBlockOpponentFork()
@@ -134,13 +125,9 @@ class AiTest extends \PHPUnit_Framework_TestCase
             [[2, 1], 'O'],
             [[1, 1], 'X'],
         ];
-
-        $this->fillBoard($fixtures);
-
-        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [1, 0];
 
-        $this->assertEquals($expectedCoords, $nextMoveCoords);
+        $this->assertAiWillDeductMove($fixtures, $expectedCoords);
     }
 
     private function assertLineOfTwo($fixtures, $expectedCoords, $placeholder)
@@ -164,5 +151,14 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
             $this->board->set($coords, $placeholder);
         }
+    }
+
+    private function assertAiWillDeductMove($fixtures, $expectedResult)
+    {
+        $this->fillBoard($fixtures);
+
+        $nextMoveCoords = $this->ai->deduct();
+
+        $this->assertEquals($expectedResult, $nextMoveCoords);
     }
 }
