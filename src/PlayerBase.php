@@ -46,6 +46,7 @@ abstract class PlayerBase
             return true;
         }
 
+        echo "\tInvalid move, please try again.";
         return false;
     }
 

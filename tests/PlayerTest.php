@@ -43,5 +43,6 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
         $al->setOnBoard('B2');
 
         $this->assertFalse($john->setOnBoard('B1'));
+        $this->expectOutputString("\tInvalid move, please try again.");
     }
 }
