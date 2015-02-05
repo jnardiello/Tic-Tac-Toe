@@ -4,6 +4,18 @@ namespace TicTacToe;
 
 class AiTest extends \PHPUnit_Framework_TestCase
 {
+    const AI_PLACEHOLDER = 'X';
+    const OPPONENT_PLACEHOLDER = 'O';
+
+    public function setUp()
+    {
+        $this->board = new Board();
+        $this->ai = new Ai();
+
+        $this->ai->setPlaceholder('X')
+            ->setBoard($this->board);
+    }
+
     public function coordinatesProvider()
     {
         return [
@@ -30,20 +42,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
      */
     public function testAiCanApplyWinRuleByRowAndColumnAndDiagonal($fixtures, $expectedCoords)
     {
-        $board = new Board();
-        foreach ($fixtures as $fixture) {
-            $board->set($fixture, 'X');
-        }
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-           ->setBoard($board);
-
-        $winningMovesCoords = $ai->deduct();
-        $ai->setOnBoard($winningMovesCoords);
-
-        $thirdCell = $board->get($expectedCoords);
-        $this->assertEquals('X', $thirdCell->getValue());
+        $this->assertLineOfTwo($fixtures, $expectedCoords, self::AI_PLACEHOLDER);
     }
 
     /**
@@ -51,35 +50,20 @@ class AiTest extends \PHPUnit_Framework_TestCase
      */
     public function testBlockRuleCanBeAppliedOverRow($fixtures, $expectedCoords)
     {
-        $board = new Board();
-        foreach ($fixtures as $fixture) {
-            $board->set($fixture, '0');
-        }
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-           ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
-        $ai->setOnBoard($nextMoveCoords);
-
-        $thirdCell = $board->get($expectedCoords);
-        $this->assertEquals('X', $thirdCell->getValue());
+        $this->assertLineOfTwo($fixtures, $expectedCoords, self::OPPONENT_PLACEHOLDER);
     }
 
     public function testAiCanForkAfterRunningBoardSimulation()
     {
-        $board = new Board();
-        $board->set([0, 2], 'O');
-        $board->set([2, 1], 'O');
-        $board->set([2, 0], 'X');
-        $board->set([1, 1], 'X');
+        $fixtures = [
+            [[0, 2], 'O'],
+            [[2, 1], 'O'],
+            [[2, 0], 'X'],
+            [[1, 1], 'X'],
+        ];
+        $this->fillBoard($fixtures);
 
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-           ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoordsRange = [
             [0, 0],
             [1, 0],
@@ -89,13 +73,7 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testAiCanMoveToTheCenter()
     {
-        $board = new Board();
-
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-           ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [1, 1];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
@@ -103,14 +81,12 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testAiWillChoseCornerOverSide()
     {
-        $board = new Board();
-        $board->set([1, 1], 'X');
+        $fixtures = [
+            [[1, 1], 'X'],
+        ];
+        $this->fillBoard($fixtures);
 
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [0, 0];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
@@ -118,21 +94,19 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptySide()
     {
-        $board = new Board();
-        $board->set([0, 0], 'O');
-        $board->set([0, 1], 'X');
-        $board->set([0, 2], 'O');
-        $board->set([1, 1], 'X');
-        $board->set([1, 2], 'O');
-        $board->set([2, 0], 'X');
-        $board->set([2, 1], 'O');
-        $board->set([2, 2], 'X');
+        $fixtures = [
+            [[0, 0], 'O'],
+            [[0, 1], 'X'],
+            [[0, 2], 'O'],
+            [[1, 1], 'X'],
+            [[1, 2], 'O'],
+            [[2, 0], 'X'],
+            [[2, 1], 'O'],
+            [[2, 2], 'X'],
+        ];
+        $this->fillBoard($fixtures);
 
-        $ai = new Ai();
-        $ai->setPlaceholder('X')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [1, 0];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
@@ -140,16 +114,14 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testAiWillForceDefenseWithoutCreatingOpponentFork()
     {
-        $board = new Board();
-        $board->set([0, 2], 'X');
-        $board->set([2, 0], 'X');
-        $board->set([1, 1], 'O');
+        $fixtures = [
+            [[0, 2], 'O'],
+            [[2, 0], 'O'],
+            [[1, 1], 'X'],
+        ];
+        $this->fillBoard($fixtures);
 
-        $ai = new Ai();
-        $ai->setPlaceholder('O')
-            ->setBoard($board);
-
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [0, 1];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
@@ -157,18 +129,40 @@ class AiTest extends \PHPUnit_Framework_TestCase
 
     public function testAiWillBlockOpponentFork()
     {
-        $board = new Board();
-        $board->set([0, 0], 'X');
-        $board->set([2, 1], 'X');
-        $board->set([1, 1], 'O');
+        $fixtures = [
+            [[0, 0], 'O'],
+            [[2, 1], 'O'],
+            [[1, 1], 'X'],
+        ];
 
-        $ai = new Ai();
-        $ai->setPlaceholder('O')
-            ->setBoard($board);
+        $this->fillBoard($fixtures);
 
-        $nextMoveCoords = $ai->deduct();
+        $nextMoveCoords = $this->ai->deduct();
         $expectedCoords = [1, 0];
 
         $this->assertEquals($expectedCoords, $nextMoveCoords);
+    }
+
+    private function assertLineOfTwo($fixtures, $expectedCoords, $placeholder)
+    {
+        foreach ($fixtures as $fixture) {
+            $this->board->set($fixture, 'X');
+        }
+
+        $nextMoveCoords = $this->ai->deduct();
+        $this->ai->setOnBoard($nextMoveCoords);
+
+        $thirdCell = $this->board->get($expectedCoords);
+        $this->assertEquals('X', $thirdCell->getValue());
+    }
+
+    private function fillBoard($fixtures)
+    {
+        foreach ($fixtures as $fixture) {
+            $coords = $fixture[0];
+            $placeholder = $fixture[1];
+
+            $this->board->set($coords, $placeholder);
+        }
     }
 }
